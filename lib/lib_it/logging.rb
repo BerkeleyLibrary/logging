@@ -28,7 +28,7 @@ module LibIT
         lograge.formatter = Formatters.lograge_formatter
       end
 
-      def webpacker
+      def webpacker?
         return @webpacker if instance_variable_defined?(:@webpacker)
 
         require 'webpacker/instance'

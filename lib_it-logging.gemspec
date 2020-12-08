@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= #{ruby_version}"
 
   spec.add_dependency 'amazing_print', '~> 1.1'
+  spec.add_dependency 'lograge', '~> 0.11'
   spec.add_dependency 'ougai', '~> 1.8'
   spec.add_dependency 'rails', '~> 6.0'
 

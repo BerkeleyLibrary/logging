@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'rails'
 
 module LibIT
   module Logging
@@ -21,8 +22,6 @@ module LibIT
       end
 
       describe :new_default_logger do
-        require 'rails'
-
         attr_reader :config
 
         before(:each) do
@@ -40,11 +39,18 @@ module LibIT
 
         it 'returns a stdout logger in production' do
           Rails.env = 'production'
-          logger = Loggers.new_default_logger(config)
+          stdout_orig = $stdout
+          stdout_tmp = StringIO.new
+          begin
+            $stdout = stdout_tmp
+            logger = Loggers.new_default_logger(config)
+          ensure
+            $stdout = stdout_orig
+          end
           expect(logger).not_to be_nil
           logdev = logger.instance_variable_get(:@logdev)
           expect(logdev.filename).to be_nil
-          expect(logdev.dev).to eq($stdout)
+          expect(logdev.dev).to eq(stdout_tmp)
         end
 
         it 'returns a stdout logger in development' do

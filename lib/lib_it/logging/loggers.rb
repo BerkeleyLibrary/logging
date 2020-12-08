@@ -28,10 +28,6 @@ module LibIT
           end
         end
 
-        def file_logger_for_env(env)
-          new_readable_logger("log/#{env}.log")
-        end
-
         def rails_file_logger(config)
           log_file = config.default_log_file
           new_readable_logger(log_file)
