@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'json'
 
-module LibIT
+module UCBLIT
   module Logging
     describe Formatters do
       describe :new_json_formatter do

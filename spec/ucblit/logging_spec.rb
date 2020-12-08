@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'rails'
 require 'lograge'
 
-module LibIT
+module UCBLIT
   describe Logging do
     describe :configure! do
 
@@ -75,7 +75,7 @@ module LibIT
       describe 'Webpacker' do
 
         before(:each) do
-          LibIT::Logging.remove_instance_variable(:@webpacker)
+          UCBLIT::Logging.remove_instance_variable(:@webpacker)
         end
 
         it 'works if Webpacker is not present' do
@@ -92,8 +92,8 @@ module LibIT
             end
           end
 
-          allow(LibIT::Logging).to receive(:require).with('webpacker/instance').and_return(true)
-          expect(LibIT::Logging.send(:webpacker?)).to eq(true)
+          allow(UCBLIT::Logging).to receive(:require).with('webpacker/instance').and_return(true)
+          expect(UCBLIT::Logging.send(:webpacker?)).to eq(true)
 
           Logging.configure!
           expect(Webpacker::Instance.logger).to eq(config.logger)

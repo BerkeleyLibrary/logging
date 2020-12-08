@@ -20,4 +20,4 @@ end
 # ------------------------------------------------------------
 # Code under test
 
-require 'lib_it/logging'
+require 'ucblit/logging'

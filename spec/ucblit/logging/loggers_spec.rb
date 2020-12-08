@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'rails'
 
-module LibIT
+module UCBLIT
   module Logging
     describe Loggers do
       describe :new_json_logger do

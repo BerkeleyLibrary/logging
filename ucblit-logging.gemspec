@@ -5,17 +5,17 @@ end
 ruby_version_file = File.expand_path('.ruby-version', __dir__)
 ruby_version = File.read(ruby_version_file).strip
 
-require 'lib_it/logging/module_info'
+require 'ucblit/logging/module_info'
 
 Gem::Specification.new do |spec|
-  spec.name = LibIT::Logging::ModuleInfo::NAME
-  spec.author = LibIT::Logging::ModuleInfo::AUTHOR
-  spec.email = LibIT::Logging::ModuleInfo::AUTHOR_EMAIL
-  spec.summary = LibIT::Logging::ModuleInfo::SUMMARY
-  spec.description = LibIT::Logging::ModuleInfo::DESCRIPTION
-  spec.license = LibIT::Logging::ModuleInfo::LICENSE
-  spec.version = LibIT::Logging::ModuleInfo::VERSION
-  spec.homepage = LibIT::Logging::ModuleInfo::HOMEPAGE
+  spec.name = UCBLIT::Logging::ModuleInfo::NAME
+  spec.author = UCBLIT::Logging::ModuleInfo::AUTHOR
+  spec.email = UCBLIT::Logging::ModuleInfo::AUTHOR_EMAIL
+  spec.summary = UCBLIT::Logging::ModuleInfo::SUMMARY
+  spec.description = UCBLIT::Logging::ModuleInfo::DESCRIPTION
+  spec.license = UCBLIT::Logging::ModuleInfo::LICENSE
+  spec.version = UCBLIT::Logging::ModuleInfo::VERSION
+  spec.homepage = UCBLIT::Logging::ModuleInfo::HOMEPAGE
 
   spec.files = `git ls-files -z`.split("\x0")
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})

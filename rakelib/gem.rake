@@ -1,7 +1,7 @@
 require 'rubygems/gem_runner'
-require 'lib_it/logging/module_info'
+require 'ucblit/logging/module_info'
 
-module LibIT
+module UCBLIT
   module Logging
     class << self
       def project_root
@@ -31,7 +31,7 @@ module LibIT
       def output_file
         @output_file ||= begin
           gem_name = File.basename(gemspec_file, '.*')
-          version = LibIT::Logging::ModuleInfo::VERSION
+          version = UCBLIT::Logging::ModuleInfo::VERSION
           basename = "#{gem_name}-#{version}.gem"
           File.join(artifacts_dir, basename)
         end
@@ -49,8 +49,8 @@ module LibIT
   end
 end
 
-desc "Build #{LibIT::Logging.gemspec_basename} as #{LibIT::Logging.output_file_relative}"
+desc "Build #{UCBLIT::Logging.gemspec_basename} as #{UCBLIT::Logging.output_file_relative}"
 task :gem do
-  args = ['build', LibIT::Logging.gemspec_file, "--output=#{LibIT::Logging.output_file}"]
+  args = ['build', UCBLIT::Logging.gemspec_file, "--output=#{UCBLIT::Logging.output_file}"]
   Gem::GemRunner.new.run(args)
 end

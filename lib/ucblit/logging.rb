@@ -1,8 +1,8 @@
-require 'lib_it/logging/events'
-require 'lib_it/logging/formatters'
-require 'lib_it/logging/loggers'
+require 'ucblit/logging/events'
+require 'ucblit/logging/formatters'
+require 'ucblit/logging/loggers'
 
-module LibIT
+module UCBLIT
   module Logging
     class << self
 

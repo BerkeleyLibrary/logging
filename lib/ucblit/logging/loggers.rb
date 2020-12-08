@@ -1,7 +1,7 @@
-require 'lib_it/logging/formatters'
-require 'lib_it/logging/tagged_logging_extensions'
+require 'ucblit/logging/formatters'
+require 'ucblit/logging/tagged_logging_extensions'
 
-module LibIT
+module UCBLIT
   module Logging
     module Loggers
       class << self

@@ -1,6 +1,6 @@
 require 'ougai'
 
-module LibIT
+module UCBLIT
   module Logging
     module Formatters
 

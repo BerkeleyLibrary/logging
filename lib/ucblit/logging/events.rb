@@ -1,4 +1,4 @@
-module LibIT
+module UCBLIT
   module Logging
     module Events
       class << self
