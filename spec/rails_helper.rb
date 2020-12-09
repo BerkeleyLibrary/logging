@@ -18,6 +18,12 @@ RSpec.configure do |config|
 end
 
 # ------------------------------------------------------------
+# Rails
+
+require 'rails'
+Rails.env = 'test'
+
+# ------------------------------------------------------------
 # Code under test
 
 require 'ucblit/logging'
