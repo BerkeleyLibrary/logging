@@ -9,6 +9,9 @@ module UCBLIT
       # Configures custom logging for a Rails application.
       def configure!
         config = Rails.application.config
+
+        # require it here to make sure Lograge loads its Railtie
+        require 'lograge' unless config.respond_to?(:lograge)
         configure_lograge!(config.lograge)
 
         logger = Loggers.new_default_logger(config)
