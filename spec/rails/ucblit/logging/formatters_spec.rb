@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'json'
+require 'ucblit/logging'
 
 module UCBLIT
   module Logging

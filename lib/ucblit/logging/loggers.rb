@@ -1,3 +1,4 @@
+require 'ucblit/logging/env'
 require 'ucblit/logging/formatters'
 require 'ucblit/logging/tagged_logging_extensions'
 
@@ -8,11 +9,11 @@ module UCBLIT
         FALLBACK_LOG_DIR = 'log'.freeze
 
         def new_default_logger(config)
-          return new_json_logger($stdout) if Rails.env.production?
-          return rails_file_logger(config) if Rails.env.test?
-          return new_broadcast_logger(config) if Rails.env.development?
+          return new_json_logger($stdout) if env.production?
+          return rails_file_logger(config) if env.test?
+          return new_broadcast_logger(config) if env.development?
 
-          raise ArgumentError, "Can't create logger for Rails environment: #{Rails.env.inspect}"
+          raise ArgumentError, "Can't create logger for Rails environment: #{env.inspect}"
         end
 
         def new_json_logger(logdev)
@@ -43,17 +44,29 @@ module UCBLIT
 
         def default_log_file_for(config)
           return config.default_log_file if config.respond_to?(:default_log_file)
-          raise ArgumentError, "Rails is defined, but #{config.inspect} is not a Rails configuration" if defined?(Rails)
 
-          File.join(ensure_log_directory, "#{Rails.env}.log")
+          warn("Rails is defined, but #{config.inspect} is not a Rails configuration") if defined?(Rails) # TODO: do we need this?
+
+          File.join(ensure_log_directory, "#{env}.log")
         end
 
         def ensure_log_directory
-          File.join(Rails.application.root, FALLBACK_LOG_DIR).tap do |log_dir|
+          File.join(workdir, FALLBACK_LOG_DIR).tap do |log_dir|
             FileUtils.mkdir(log_dir) unless File.exist?(log_dir)
-            raise ArgumentError, "Not a directory: #{log_dir}" unless File.directory?(dir)
+            raise ArgumentError, "Not a directory: #{log_dir}" unless File.directory?(log_dir)
           end
         end
+
+        def workdir
+          return Rails.application.root if defined?(Rails)
+
+          Pathname.getwd
+        end
+
+        def env
+          Logging.env
+        end
+
       end
 
       class UCBLITLogger < Ougai::Logger

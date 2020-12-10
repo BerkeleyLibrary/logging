@@ -1,3 +1,4 @@
+require 'ucblit/logging/env'
 require 'ucblit/logging/events'
 require 'ucblit/logging/formatters'
 require 'ucblit/logging/loggers'
@@ -11,7 +12,7 @@ module UCBLIT
           configure_lograge(config)
 
           logger = Loggers.new_default_logger(config)
-          logger.info("Custom logger initialized for environment #{Rails.env.inspect}")
+          logger.info("Custom logger initialized for environment #{Logging.env.inspect}")
           configure_webpacker(logger)
           config.logger = logger
         end

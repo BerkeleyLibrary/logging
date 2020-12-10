@@ -1,5 +1,5 @@
-require 'rails_helper'
-require 'rails'
+require 'standalone_helper'
+require 'ostruct'
 require 'lograge'
 
 module UCBLIT
@@ -10,10 +10,7 @@ module UCBLIT
         attr_reader :config
 
         before(:each) do
-          app = Class.new(Rails::Application).new
-          allow(Rails).to receive(:application).and_return(app)
-          @config = app.config
-
+          @config = OpenStruct.new
           config.lograge = Lograge::OrderedOptions.new
         end
 
