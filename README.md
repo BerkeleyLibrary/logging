@@ -4,9 +4,5 @@ Opinionated custom logger for UCB Library IT Rails applications.
 
 ## Usage
 
-In `config/application.rb`, add the following:
-
-```
-require 'ucblit/logging'
-UCBLIT::Logging.configure!
-```
+`UCBLIT::Logging` is implemented as a Railtie, so adding it to your Gemfile should
+cause it to be loaded automatically.
