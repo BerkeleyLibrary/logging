@@ -27,8 +27,12 @@ module UCBLIT
           @config = OpenStruct.new
         end
 
+        after(:each) do
+          UCBLIT::Logging.instance_variable_set(:@env, nil)
+        end
+
         it 'returns a file logger in test' do
-          Rails.env = 'test'
+          UCBLIT::Logging.env = 'test'
           logger = Loggers.new_default_logger(config)
           expect(logger).not_to be_nil
           logdev = logger.instance_variable_get(:@logdev)
@@ -36,7 +40,7 @@ module UCBLIT
         end
 
         it 'returns a stdout logger in production' do
-          Rails.env = 'production'
+          UCBLIT::Logging.env = 'production'
           stdout_orig = $stdout
           stdout_tmp = StringIO.new
           begin
@@ -52,7 +56,7 @@ module UCBLIT
         end
 
         it 'returns a stdout logger in development' do
-          Rails.env = 'development'
+          UCBLIT::Logging.env = 'development'
           logger = Loggers.new_default_logger(config)
           expect(logger).not_to be_nil
           logdev = logger.instance_variable_get(:@logdev)

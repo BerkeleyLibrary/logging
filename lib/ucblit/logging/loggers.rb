@@ -9,11 +9,11 @@ module UCBLIT
         FALLBACK_LOG_DIR = 'log'.freeze
 
         def new_default_logger(config)
-          return new_json_logger($stdout) if env.production?
-          return rails_file_logger(config) if env.test?
-          return new_broadcast_logger(config) if env.development?
+          return new_json_logger($stdout) if Logging.env.production?
+          return rails_file_logger(config) if Logging.env.test?
+          return new_broadcast_logger(config) if Logging.env.development?
 
-          raise ArgumentError, "Can't create logger for Rails environment: #{env.inspect}"
+          raise ArgumentError, "Can't create logger for Rails environment: #{Logging.env.inspect}"
         end
 
         def new_json_logger(logdev)
@@ -45,7 +45,7 @@ module UCBLIT
         def default_log_file_for(config)
           return config.default_log_file if config.respond_to?(:default_log_file)
 
-          File.join(ensure_log_directory, "#{env}.log")
+          File.join(ensure_log_directory, "#{Logging.env}.log")
         end
 
         def ensure_log_directory
@@ -59,10 +59,6 @@ module UCBLIT
           return Rails.application.root if defined?(Rails)
 
           Pathname.getwd
-        end
-
-        def env
-          Logging.env
         end
 
       end
