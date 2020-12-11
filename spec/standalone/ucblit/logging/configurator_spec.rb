@@ -16,7 +16,7 @@ module UCBLIT
 
         it 'sets the logger' do
           Configurator.configure(config)
-          expect(config.logger).to be_a(Logging::Loggers::UCBLITLogger)
+          expect(config.logger).to be_a(Logging::Logger)
         end
 
         describe :configure_lograge! do

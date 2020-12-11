@@ -3,6 +3,9 @@ require 'ucblit/logging/formatters'
 
 # Monkey-patch ActiveSupport::TaggedLogging::Formatter
 # not to produce garbage by prepending tags to hashes.
+#
+# TODO: Can we intercept Formatter.extend() instead? See
+# https://github.com/rails/rails/blob/v6.0.3.4/activesupport/lib/active_support/tagged_logging.rb#L73
 module ActiveSupport
   module TaggedLogging
     module Formatter

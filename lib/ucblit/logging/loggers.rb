@@ -1,6 +1,6 @@
 require 'ucblit/logging/env'
 require 'ucblit/logging/formatters'
-require 'ucblit/logging/tagged_logging_extensions'
+require 'ucblit/logging/logger'
 
 module UCBLIT
   module Logging
@@ -39,13 +39,11 @@ module UCBLIT
         end
 
         def new_logger_with(logdev:, formatter:)
-          UCBLITLogger.new(logdev).tap { |l| l.formatter = formatter }
+          Logger.new(logdev).tap { |l| l.formatter = formatter }
         end
 
         def default_log_file_for(config)
           return config.default_log_file if config.respond_to?(:default_log_file)
-
-          warn("Rails is defined, but #{config.inspect} is not a Rails configuration") if defined?(Rails) # TODO: do we need this?
 
           File.join(ensure_log_directory, "#{env}.log")
         end
@@ -67,11 +65,6 @@ module UCBLIT
           Logging.env
         end
 
-      end
-
-      class UCBLITLogger < Ougai::Logger
-        include ActiveSupport::LoggerThreadSafeLevel
-        include ActiveSupport::LoggerSilence
       end
     end
   end
