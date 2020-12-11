@@ -13,7 +13,7 @@ module UCBLIT
           return rails_file_logger(config) if Logging.env.test?
           return new_broadcast_logger(config) if Logging.env.development?
 
-          raise ArgumentError, "Can't create logger for Rails environment: #{Logging.env.inspect}"
+          raise ArgumentError, "Can't create logger for environment: #{Logging.env.inspect}"
         end
 
         def new_json_logger(logdev)

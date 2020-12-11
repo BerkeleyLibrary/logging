@@ -65,6 +65,11 @@ module UCBLIT
 
           # TODO: come up with a succinct way to test broadcast to file
         end
+
+        it 'fails on an unsupported environment' do
+          UCBLIT::Logging.env = 'some-unsupported-environment'
+          expect { Loggers.new_default_logger(config) }.to raise_error(ArgumentError)
+        end
       end
     end
   end

@@ -1,5 +1,5 @@
 # ------------------------------------------------------------
-# Simplecov
+# SimpleCov
 
 require 'colorize'
 require 'simplecov' if ENV['COVERAGE']

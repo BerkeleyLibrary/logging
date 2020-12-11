@@ -4,6 +4,16 @@ require 'rails'
 module UCBLIT
   module Logging
     describe Loggers do
+      attr_reader :orig_rails_env
+
+      before(:each) do
+        @orig_rails_env = Rails.env
+      end
+
+      after(:each) do
+        Rails.env = orig_rails_env
+      end
+
       describe :new_json_logger do
         it 'supports tagged logging' do
           out = StringIO.new
@@ -30,7 +40,7 @@ module UCBLIT
         end
 
         it 'returns a file logger in test' do
-          Rails.env = 'test'
+          UCBLIT::Logging.env = 'test'
           logger = Loggers.new_default_logger(config)
           expect(logger).not_to be_nil
           logdev = logger.instance_variable_get(:@logdev)
@@ -38,7 +48,7 @@ module UCBLIT
         end
 
         it 'returns a stdout logger in production' do
-          Rails.env = 'production'
+          UCBLIT::Logging.env = 'production'
           stdout_orig = $stdout
           stdout_tmp = StringIO.new
           begin
@@ -54,7 +64,7 @@ module UCBLIT
         end
 
         it 'returns a stdout logger in development' do
-          Rails.env = 'development'
+          UCBLIT::Logging.env = 'development'
           logger = Loggers.new_default_logger(config)
           expect(logger).not_to be_nil
           logdev = logger.instance_variable_get(:@logdev)

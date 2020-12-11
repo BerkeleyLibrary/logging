@@ -1,7 +1,7 @@
 require 'rspec/core/rake_task'
 
 namespace :spec do
-  test_groups = [:standalone, :rails]
+  test_groups = %i[standalone rails]
 
   test_groups.each do |group|
     desc "Run #{group} tests"
