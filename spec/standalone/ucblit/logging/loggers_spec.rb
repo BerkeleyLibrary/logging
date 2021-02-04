@@ -1,4 +1,5 @@
 require 'standalone_helper'
+require 'json'
 
 module UCBLIT
   module Logging
@@ -20,6 +21,15 @@ module UCBLIT
         end
       end
 
+      describe :default_logger do
+        it 'returns a readable $stdout logger' do
+          logger = Loggers.default_logger
+          expect(logger).not_to be_nil
+          expect(logger).to be_a(Logger)
+          expect(logger.formatter).to be_a(Ougai::Formatters::Readable)
+        end
+      end
+
       describe :new_default_logger do
         attr_reader :config
 
@@ -29,6 +39,13 @@ module UCBLIT
 
         after(:each) do
           UCBLIT::Logging.instance_variable_set(:@env, nil)
+        end
+
+        it 'returns a readable $stdout logger if given no config' do
+          logger = Loggers.new_default_logger
+          expect(logger).not_to be_nil
+          expect(logger).to be_a(Logger)
+          expect(logger.formatter).to be_a(Ougai::Formatters::Readable)
         end
 
         it 'returns a file logger in test' do

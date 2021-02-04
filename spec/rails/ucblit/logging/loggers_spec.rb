@@ -31,6 +31,12 @@ module UCBLIT
         end
       end
 
+      describe :default_logger do
+        it 'returns the Rails logger' do
+          expect(Loggers.default_logger).to be(Rails.logger)
+        end
+      end
+
       describe :new_default_logger do
         attr_reader :config
 

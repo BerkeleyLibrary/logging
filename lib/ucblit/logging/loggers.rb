@@ -8,7 +8,13 @@ module UCBLIT
       class << self
         FALLBACK_LOG_DIR = 'log'.freeze
 
-        def new_default_logger(config)
+        def default_logger
+          defined?(Rails) ? Rails.logger : new_default_logger
+        end
+
+        # TODO: support passing a hash / passing default_log_file
+        def new_default_logger(config = nil)
+          return new_readable_logger($stdout) unless config
           return new_json_logger($stdout) if Logging.env.production?
           return rails_file_logger(config) if Logging.env.test?
           return new_broadcast_logger(config) if Logging.env.development?
