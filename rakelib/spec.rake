@@ -11,7 +11,7 @@ namespace :spec do
     end
   end
 
-  task all: test_groups
+  multitask all: test_groups
 end
 
 desc 'Run all tests'
