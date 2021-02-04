@@ -2,8 +2,10 @@ File.expand_path('lib', __dir__).tap do |lib|
   $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 end
 
-ruby_version_file = File.expand_path('.ruby-version', __dir__)
-ruby_version = File.read(ruby_version_file).strip
+ruby_version = begin
+  ruby_version_file = File.expand_path('.ruby-version', __dir__)
+  File.read(ruby_version_file).strip
+end
 
 require 'ucblit/logging/module_info'
 
