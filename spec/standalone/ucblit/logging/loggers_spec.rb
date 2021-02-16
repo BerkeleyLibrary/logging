@@ -24,9 +24,12 @@ module UCBLIT
       describe :default_logger do
         it 'returns a readable $stdout logger' do
           logger = Loggers.default_logger
-          expect(logger).not_to be_nil
           expect(logger).to be_a(Logger)
           expect(logger.formatter).to be_a(Ougai::Formatters::Readable)
+
+          logdev = logger.instance_variable_get(:@logdev)
+          expect(logdev).to be_a(::Logger::LogDevice)
+          expect(logdev.dev).to be($stdout)
         end
       end
 

@@ -9,7 +9,13 @@ module UCBLIT
         FALLBACK_LOG_DIR = 'log'.freeze
 
         def default_logger
-          defined?(Rails) ? Rails.logger : new_default_logger
+          if defined?(Rails)
+            return Rails.logger if Rails.logger
+
+            warn('Rails is defined, but Rails logger is nil')
+          end
+
+          new_default_logger
         end
 
         # TODO: support passing a hash / passing default_log_file

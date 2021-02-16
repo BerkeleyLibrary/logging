@@ -32,9 +32,41 @@ module UCBLIT
       end
 
       describe :default_logger do
+        before(:each) { @rails_logger = Rails.logger }
+        after(:each) { Rails.logger = @rails_logger }
+
         it 'returns the Rails logger' do
-          expect(Loggers.default_logger).to be(Rails.logger)
+          expected_logger = double(::Logger)
+          Rails.logger = expected_logger
+
+          expect(Loggers.default_logger).to be(expected_logger)
         end
+
+        it 'returns a readable $stdout logger if Rails logger is nil' do
+          Rails.logger = nil
+
+          actual_logger = Loggers.default_logger
+          expect(actual_logger).to be_a(Logger)
+          expect(actual_logger.formatter).to be_a(Ougai::Formatters::Readable)
+
+          logdev = actual_logger.instance_variable_get(:@logdev)
+          expect(logdev).to be_a(::Logger::LogDevice)
+          expect(logdev.dev).to be($stdout)
+        end
+
+        it "doesn't cache the default logger if the Rails logger is initialized later" do
+          Rails.logger = nil
+
+          initial_default_logger = Loggers.default_logger
+
+          expected_logger = double(::Logger)
+          Rails.logger = expected_logger
+
+          actual_logger = Loggers.default_logger
+          expect(actual_logger).not_to be(initial_default_logger)
+          expect(actual_logger).to be(expected_logger)
+        end
+
       end
 
       describe :new_default_logger do

@@ -54,7 +54,7 @@
     <orderEntry type="library" scope="PROVIDED" name="nio4r (v2.5.4, RVM: ruby-2.7.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="nokogiri (v1.10.10, RVM: ruby-2.7.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="oj (v3.10.16, RVM: ruby-2.7.2) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="ougai (v1.8.5, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="ougai (v1.9.1, RVM: ruby-2.7.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="parallel (v1.20.1, RVM: ruby-2.7.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="parser (v2.7.2.0, RVM: ruby-2.7.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rack (v2.2.3, RVM: ruby-2.7.2) [gem]" level="application" />
