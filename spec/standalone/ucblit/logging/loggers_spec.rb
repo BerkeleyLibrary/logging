@@ -29,7 +29,7 @@ module UCBLIT
 
           logdev = logger.instance_variable_get(:@logdev)
           expect(logdev).to be_a(::Logger::LogDevice)
-          expect(logdev.dev).to be($stdout)
+          expect(logdev.dev).to eq($stdout)
         end
       end
 
