@@ -19,6 +19,39 @@ module UCBLIT
           expect(logged_json['msg']).to eq(expected_msg)
           expect(logged_json['tags']).to eq([expected_tag])
         end
+
+        it 'logs an error as a hash' do
+          class ::TestError < StandardError; end
+
+          begin
+            out = StringIO.new
+
+            msg = 'Help I am trapped in a unit test'
+
+            begin
+              raise TestError, msg
+            rescue => e
+              ex = e
+              Loggers.new_json_logger(out).error(e)
+            end
+
+            logged_json = JSON.parse(out.string)
+            expect(logged_json['msg']).to eq(msg)
+            err_json = logged_json['err']
+            expect(err_json).to be_a(Hash)
+            expect(err_json['name']).to eq(TestError.name)
+            expect(err_json['message']).to eq(msg)
+
+            err_stack = err_json['stack']
+            backtrace = ex.backtrace
+            expect(backtrace).not_to be_nil # just to be sure
+            backtrace.each do |line|
+              expect(err_stack).to include(line)
+            end
+          ensure
+            Object.send(:remove_const, :TestError)
+          end
+        end
       end
 
       describe :default_logger do
@@ -30,6 +63,50 @@ module UCBLIT
           logdev = logger.instance_variable_get(:@logdev)
           expect(logdev).to be_a(::Logger::LogDevice)
           expect(logdev.dev).to eq($stdout)
+        end
+
+        it 'logs an error with cause and backtrace' do
+          class ::TestError < StandardError; end
+
+          begin
+            out = StringIO.new
+
+            msg = 'Help I am trapped in a unit test'
+
+            begin
+              raise TestError, msg
+            rescue => e
+              ex = e
+              Loggers.new_readable_logger(out).error(e)
+            end
+
+            logged_txt = out.string
+            expect(logged_txt).to include(msg)
+            expect(logged_txt).to include(TestError.name)
+            backtrace = ex.backtrace
+            expect(backtrace).not_to be_nil # just to be sure
+            backtrace.each do |line|
+              expect(logged_txt).to include(line)
+            end
+          ensure
+            Object.send(:remove_const, :TestError)
+          end
+        end
+
+        it 'logs an arbitrary hash in a reasonable way' do
+          out = StringIO.new
+          msg_txt = "message text"
+          msg_h = {
+            foo: 'Foo',
+            bar: 'Bar',
+            baz: 'Baz'
+          }
+          Loggers.new_readable_logger(out).info(msg_txt, msg_h)
+          expect(out.string).to include(msg_txt)
+          msg_h.each do |k, v|
+            expect(out.string).to include(k.inspect)
+            expect(out.string).to include(v.inspect)
+          end
         end
       end
 

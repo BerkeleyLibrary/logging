@@ -75,7 +75,7 @@
     <orderEntry type="library" scope="PROVIDED" name="rspec-core (v3.10.0, RVM: ruby-2.7.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-expectations (v3.10.0, RVM: ruby-2.7.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-mocks (v3.10.0, RVM: ruby-2.7.2) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="rspec-support (v3.10.1, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rspec-support (v3.10.2, RVM: ruby-2.7.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubocop (v0.91.1, RVM: ruby-2.7.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubocop-ast (v0.8.0, RVM: ruby-2.7.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ruby-progressbar (v1.10.1, RVM: ruby-2.7.2) [gem]" level="application" />
@@ -107,7 +107,7 @@
             </subtasks>
           </RakeTaskImpl>
           <RakeTaskImpl description="Run all specs in spec directory, with coverage" fullCommand="coverage" id="coverage" />
-          <RakeTaskImpl description="Run tests, check test coverage, check code style" fullCommand="default" id="default" />
+          <RakeTaskImpl description="Run tests, check test coverage, check code style, check for vulnerabilities, build gem" fullCommand="default" id="default" />
           <RakeTaskImpl description="Build ucblit-logging.gemspec as ucblit-logging-0.0.1.gem" fullCommand="gem" id="gem" />
           <RakeTaskImpl description="Run RuboCop with auto-correct, and output results to console" fullCommand="ra" id="ra" />
           <RakeTaskImpl description="Run rubocop with HTML output" fullCommand="rubocop" id="rubocop" />
