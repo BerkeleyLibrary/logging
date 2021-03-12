@@ -7,7 +7,7 @@ module UCBLIT
       SUMMARY = 'UC Berkeley Library custom logging for Rails'.freeze
       DESCRIPTION = 'Gem for UC Berkeley Library shared Rails logging code'.freeze
       LICENSE = 'MIT'.freeze
-      VERSION = '0.0.1'.freeze
+      VERSION = '0.1.0'.freeze
       HOMEPAGE = 'https://git.lib.berkeley.edu/lap/ucblit-logging'.freeze
 
       private_class_method :new
