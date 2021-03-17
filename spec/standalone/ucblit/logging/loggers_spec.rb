@@ -20,6 +20,7 @@ module UCBLIT
           expect(logged_json['tags']).to eq([expected_tag])
         end
 
+        # rubocop:disable Lint/ConstantDefinitionInBlock
         it 'logs an error as a hash' do
           class ::TestError < StandardError; end
 
@@ -30,7 +31,7 @@ module UCBLIT
 
             begin
               raise TestError, msg
-            rescue => e
+            rescue TestError => e
               ex = e
               Loggers.new_json_logger(out).error(e)
             end
@@ -52,6 +53,7 @@ module UCBLIT
             Object.send(:remove_const, :TestError)
           end
         end
+        # rubocop:enable Lint/ConstantDefinitionInBlock
       end
 
       describe :default_logger do
@@ -65,6 +67,7 @@ module UCBLIT
           expect(logdev.dev).to eq($stdout)
         end
 
+        # rubocop:disable Lint/ConstantDefinitionInBlock
         it 'logs an error with cause and backtrace' do
           class ::TestError < StandardError; end
 
@@ -75,7 +78,7 @@ module UCBLIT
 
             begin
               raise TestError, msg
-            rescue => e
+            rescue TestError => e
               ex = e
               Loggers.new_readable_logger(out).error(e)
             end
@@ -92,10 +95,11 @@ module UCBLIT
             Object.send(:remove_const, :TestError)
           end
         end
+        # rubocop:enable Lint/ConstantDefinitionInBlock
 
         it 'logs an arbitrary hash in a reasonable way' do
           out = StringIO.new
-          msg_txt = "message text"
+          msg_txt = 'message text'
           msg_h = {
             foo: 'Foo',
             bar: 'Bar',
