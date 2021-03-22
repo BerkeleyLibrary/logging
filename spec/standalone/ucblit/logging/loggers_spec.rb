@@ -4,9 +4,21 @@ require 'json'
 module UCBLIT
   module Logging
     describe Loggers do
+      attr_reader :out
+
+      # rubocop:disable Lint/ConstantDefinitionInBlock
+      before(:each) do
+        @out = StringIO.new
+        class ::TestError < StandardError; end
+      end
+      # rubocop:enable Lint/ConstantDefinitionInBlock
+
+      after(:each) do
+        Object.send(:remove_const, :TestError)
+      end
+
       describe :new_json_logger do
         it 'supports tagged logging' do
-          out = StringIO.new
           logger = Loggers.new_json_logger(out)
           logger = ActiveSupport::TaggedLogging.new(logger)
 
@@ -20,40 +32,30 @@ module UCBLIT
           expect(logged_json['tags']).to eq([expected_tag])
         end
 
-        # rubocop:disable Lint/ConstantDefinitionInBlock
         it 'logs an error as a hash' do
-          class ::TestError < StandardError; end
+          msg = 'Help I am trapped in a unit test'
 
           begin
-            out = StringIO.new
+            raise TestError, msg
+          rescue TestError => e
+            ex = e
+            Loggers.new_json_logger(out).error(e)
+          end
 
-            msg = 'Help I am trapped in a unit test'
+          logged_json = JSON.parse(out.string)
+          expect(logged_json['msg']).to eq(msg)
+          err_json = logged_json['err']
+          expect(err_json).to be_a(Hash)
+          expect(err_json['name']).to eq(TestError.name)
+          expect(err_json['message']).to eq(msg)
 
-            begin
-              raise TestError, msg
-            rescue TestError => e
-              ex = e
-              Loggers.new_json_logger(out).error(e)
-            end
-
-            logged_json = JSON.parse(out.string)
-            expect(logged_json['msg']).to eq(msg)
-            err_json = logged_json['err']
-            expect(err_json).to be_a(Hash)
-            expect(err_json['name']).to eq(TestError.name)
-            expect(err_json['message']).to eq(msg)
-
-            err_stack = err_json['stack']
-            backtrace = ex.backtrace
-            expect(backtrace).not_to be_nil # just to be sure
-            backtrace.each do |line|
-              expect(err_stack).to include(line)
-            end
-          ensure
-            Object.send(:remove_const, :TestError)
+          err_stack = err_json['stack']
+          backtrace = ex.backtrace
+          expect(backtrace).not_to be_nil # just to be sure
+          backtrace.each do |line|
+            expect(err_stack).to include(line)
           end
         end
-        # rubocop:enable Lint/ConstantDefinitionInBlock
       end
 
       describe :default_logger do
@@ -67,13 +69,8 @@ module UCBLIT
           expect(logdev.dev).to eq($stdout)
         end
 
-        # rubocop:disable Lint/ConstantDefinitionInBlock
-        it 'logs an error with cause and backtrace' do
-          class ::TestError < StandardError; end
-
-          begin
-            out = StringIO.new
-
+        describe 'errors' do
+          it 'logs an error alone with cause and backtrace' do
             msg = 'Help I am trapped in a unit test'
 
             begin
@@ -91,27 +88,131 @@ module UCBLIT
             backtrace.each do |line|
               expect(logged_txt).to include(line)
             end
-          ensure
-            Object.send(:remove_const, :TestError)
           end
-        end
-        # rubocop:enable Lint/ConstantDefinitionInBlock
 
-        it 'logs an arbitrary hash in a reasonable way' do
-          out = StringIO.new
-          msg_txt = 'message text'
-          msg_h = {
-            foo: 'Foo',
-            bar: 'Bar',
-            baz: 'Baz'
-          }
-          Loggers.new_readable_logger(out).info(msg_txt, msg_h)
-          expect(out.string).to include(msg_txt)
-          msg_h.each do |k, v|
-            expect(out.string).to include(k.inspect)
-            expect(out.string).to include(v.inspect)
-          end
         end
+
+        describe 'messages with text and data' do
+          it 'logs an arbitrary hash in a reasonable way' do
+            out = StringIO.new
+            msg_txt = 'message text'
+            msg_h = {
+              foo: 'Foo',
+              bar: 'Bar',
+              baz: 'Baz'
+            }
+            Loggers.new_readable_logger(out).info(msg_txt, msg_h)
+
+            logged_txt = out.string
+            expect(logged_txt).to include(msg_txt)
+            msg_h.each do |k, v|
+              expect(logged_txt).to include(k.inspect)
+              expect(logged_txt).to include(v.inspect)
+            end
+          end
+
+          it 'logs something with #to_hash as a hash' do
+            out = StringIO.new
+            msg_txt = 'message text'
+            msg_h = {
+              foo: 'Foo',
+              bar: 'Bar',
+              baz: 'Baz'
+            }
+            msg_obj = Object.new
+            msg_obj.singleton_class.define_method(:to_hash) { msg_h }
+
+            Loggers.new_readable_logger(out).info(msg_txt, msg_obj)
+
+            logged_txt = out.string
+            expect(logged_txt).to include(msg_txt)
+            msg_h.each do |k, v|
+              expect(logged_txt).to include(k.inspect)
+              expect(logged_txt).to include(v.inspect)
+            end
+          end
+
+          it 'logs an error with cause and backtrace' do
+            msg_txt = 'message text'
+            ex_msg = 'Help I am trapped in a unit test'
+
+            begin
+              raise TestError, ex_msg
+            rescue TestError => e
+              ex = e
+              Loggers.new_readable_logger(out).error(msg_txt, e)
+            end
+
+            logged_txt = out.string
+            expect(logged_txt).to include(msg_txt)
+            expect(logged_txt).to include(ex_msg)
+            expect(logged_txt).to include(TestError.name)
+            backtrace = ex.backtrace
+            expect(backtrace).not_to be_nil # just to be sure
+            backtrace.each do |line|
+              expect(logged_txt).to include(line)
+            end
+          end
+
+        end
+
+        describe 'messages with data and no text' do
+          it 'logs an arbitrary hash in a reasonable way' do
+            out = StringIO.new
+            msg_h = {
+              foo: 'Foo',
+              bar: 'Bar',
+              baz: 'Baz'
+            }
+            Loggers.new_readable_logger(out).info(msg_h)
+            logged_txt = out.string
+            msg_h.each do |k, v|
+              expect(logged_txt).to include(k.inspect)
+              expect(logged_txt).to include(v.inspect)
+            end
+          end
+
+          it 'logs something with #to_hash as a hash' do
+            out = StringIO.new
+            msg_h = {
+              foo: 'Foo',
+              bar: 'Bar',
+              baz: 'Baz'
+            }
+            msg_obj = Object.new
+            msg_obj.singleton_class.define_method(:to_hash) { msg_h }
+
+            Loggers.new_readable_logger(out).info(msg_obj)
+
+            logged_txt = out.string
+            msg_h.each do |k, v|
+              expect(logged_txt).to include(k.inspect)
+              expect(logged_txt).to include(v.inspect)
+            end
+          end
+
+          it 'logs an error with cause and backtrace' do
+            ex_msg = 'Help I am trapped in a unit test'
+
+            begin
+              raise TestError, ex_msg
+            rescue TestError => e
+              ex = e
+              Loggers.new_readable_logger(out).error(e)
+            end
+
+            logged_txt = out.string
+            expect(logged_txt).to include(ex_msg)
+            expect(logged_txt).to include(TestError.name)
+            backtrace = ex.backtrace
+            expect(backtrace).not_to be_nil # just to be sure
+            backtrace.each do |line|
+              expect(logged_txt).to include(line)
+            end
+          end
+
+        end
+
       end
 
       describe :new_default_logger do
