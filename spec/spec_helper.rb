@@ -1,8 +1,24 @@
 # ------------------------------------------------------------
 # SimpleCov
 
-require 'colorize'
-require 'simplecov' if ENV['COVERAGE']
+if ENV['COVERAGE']
+  require 'simplecov'
+
+  spec_root = File.realpath(__dir__)
+  spec_group_re = %r{(?<=^#{spec_root}/)[^/]+(?=/)}
+
+  RSpec.configure do |config|
+    config.before(:each) do |example|
+      abs_path = File.realpath(example.metadata[:absolute_file_path])
+      match_data = spec_group_re.match(abs_path)
+      raise ArgumentError, "Unable to determine group for example at #{abs_path}" unless match_data
+
+      spec_group = match_data[0]
+      SimpleCov.command_name(spec_group)
+      SimpleCov.coverage_dir("artifacts/simplecov/#{spec_group}")
+    end
+  end
+end
 
 # ------------------------------------------------------------
 # RSpec

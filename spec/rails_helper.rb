@@ -1,3 +1,6 @@
+# ------------------------------------------------------------
+# RSpec
+
 require 'spec_helper'
 
 # ------------------------------------------------------------
@@ -5,11 +8,6 @@ require 'spec_helper'
 
 require 'rails'
 Rails.env = 'test'
-
-# ------------------------------------------------------------
-# SimpleCov
-
-SimpleCov.command_name('spec:rails') if defined?(SimpleCov)
 
 # ------------------------------------------------------------
 # Code under test

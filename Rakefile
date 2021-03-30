@@ -11,10 +11,21 @@ end
 # ------------------------------------------------------------
 # CI
 
-ENV['RAILS_ENV'] = 'test' if ENV['CI']
+if ENV['CI']
+  ENV['RAILS_ENV'] = 'test'
+  ENV['GENERATE_REPORTS'] ||= 'true'
+end
 
 # ------------------------------------------------------------
 # Custom tasks
 
-desc 'Run tests, check test coverage, check code style, check for vulnerabilities, build gem'
-task default: %i[coverage rubocop bundle:audit gem]
+desc 'Remove artifacts directory'
+task :clean do
+  FileUtils.rm_rf('artifacts')
+end
+
+desc 'Check test coverage, check code style, check gems for vulnerabilities'
+task check: %w[coverage rubocop bundle:audit]
+
+desc 'Clean, check, build gem'
+task default: %i[clean check gem]
