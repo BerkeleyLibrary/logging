@@ -1,5 +1,5 @@
 namespace :bundle do
-  desc 'Updates the ruby-advisory-db then runs bundle-audit'
+  desc 'Check bundled gems for vulnerabilities against the latest ruby-advisory-db'
   task :audit do
     require 'bundler/audit/cli'
     Bundler::Audit::CLI.start ['update']

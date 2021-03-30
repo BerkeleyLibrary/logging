@@ -13,6 +13,9 @@ dockerComposePipeline(
             'Code Coverage': 'artifacts/rcov',
             'RuboCop'      : 'artifacts/rubocop'
         ],
-        raw  : ['artifacts/**/*.gem']
+        raw  : [
+            'artifacts/**/*.gem',
+            'artifacts/**/*.json'
+        ]
     ]
 )

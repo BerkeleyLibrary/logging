@@ -6,12 +6,18 @@ module UCBLIT
   module Logging
     describe Configurator do
       describe :configure! do
-
         attr_reader :config
 
         before(:each) do
+          @stdout_orig = $stdout
+          $stdout = StringIO.new
+
           @config = OpenStruct.new
           config.lograge = Lograge::OrderedOptions.new
+        end
+
+        after(:each) do
+          $stdout = @stdout_orig
         end
 
         it 'sets the logger' do

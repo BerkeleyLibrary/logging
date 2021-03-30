@@ -1,9 +1,7 @@
-require 'spec_helper'
-
 # ------------------------------------------------------------
-# SimpleCov
+# RSpec
 
-SimpleCov.command_name('spec:standalone') if defined?(SimpleCov)
+require 'spec_helper'
 
 # ------------------------------------------------------------
 # RSpec
@@ -12,8 +10,7 @@ RSpec.configure do |config|
   config.around(:example) do |example|
     next example.run unless defined?(Rails)
 
-    rails_orig = Rails
-    Object.send(:remove_const, :Rails)
+    rails_orig = Object.send(:remove_const, :Rails)
     begin
       example.run
     ensure
