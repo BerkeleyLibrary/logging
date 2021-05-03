@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'standalone_helper'
 
 module UCBLIT
   describe Logging do
@@ -26,25 +26,26 @@ module UCBLIT
     end
 
     before(:each) do
-      @rails_logger_orig = Rails.logger
-      Rails.logger = new_mock_logger
-
       if (@logger_was_defined = logger_defined?)
         @logging_logger_orig = Logging.instance_variable_get(:@logger)
         undefine_logger!
       end
+
+      # Outside Rails, `default_logger` usually returns a new logger every time, so to make this
+      # test simpler, we mock it to always return the same object
+      persistent_default_logger = new_mock_logger
+      allow(Logging::Loggers).to receive(:default_logger).and_return(persistent_default_logger)
     end
 
     after(:each) do
       @logger_was_defined ? reset_logger! : undefine_logger!
-      Rails.logger = @rails_logger_orig
     end
 
     describe 'class methods' do
       describe :logger do
         it 'returns the default logger' do
           logger = Logging::Loggers.default_logger
-          expect(Logging.logger).to be(logger)
+          expect(Logging.logger).to eq(logger)
         end
 
         it 'returns a set logger' do
@@ -59,14 +60,14 @@ module UCBLIT
         it 'rejects a non-logger' do
           original_logger = Logging.logger
           expect { Logging.logger = Object.new }.to raise_error(ArgumentError)
-          expect(Logging.logger).to be(original_logger)
+          expect(Logging.logger).to eq(original_logger)
         end
 
         it 'can be reset to default with nil' do
           default_logger = Logging::Loggers.default_logger
           Logging.logger = new_mock_logger
           Logging.logger = nil
-          expect(Logging.logger).to be(default_logger)
+          expect(Logging.logger).to eq(default_logger)
         end
       end
     end
@@ -82,7 +83,7 @@ module UCBLIT
       describe :logger do
         it 'returns the default logger' do
           logger = Logging::Loggers.default_logger
-          expect(logificator.logger).to be(logger)
+          expect(logificator.logger).to eq(logger)
         end
 
         it 'returns a set logger' do
@@ -124,7 +125,7 @@ module UCBLIT
           default_logger = Logging::Loggers.default_logger
           logificator.logger = new_mock_logger
           logificator.logger = nil
-          expect(logificator.logger).to be(default_logger)
+          expect(logificator.logger).to eq(default_logger)
         end
       end
     end
