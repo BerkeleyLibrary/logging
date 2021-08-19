@@ -1,0 +1,9 @@
+language: ruby
+
+os:
+  - linux
+  - osx
+
+rvm:
+  - 2.7
+  - ruby-head
