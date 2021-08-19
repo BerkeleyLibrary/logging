@@ -4,6 +4,7 @@ AllCops:
     - 'bin/**/*'
     - 'node_modules/**/*'
     - 'artifacts/**/*'
+    - 'vendor/**/*'
 
 # Allow one line around block body (Layout/EmptyLines will still disallow two or more)
 Layout/EmptyLinesAroundBlockBody:
