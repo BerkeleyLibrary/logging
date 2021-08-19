@@ -9,7 +9,13 @@ module BerkeleyLibrary
       # rubocop:disable Lint/ConstantDefinitionInBlock
       before(:each) do
         @out = StringIO.new
-        class ::TestError < StandardError; end
+        class ::TestError < StandardError
+          attr_writer :cause
+
+          def cause
+            @cause || super
+          end
+        end
       end
       # rubocop:enable Lint/ConstantDefinitionInBlock
 
@@ -18,6 +24,23 @@ module BerkeleyLibrary
       end
 
       describe :new_json_logger do
+
+        # TODO: rewrite this as a matcher
+        # rubocop:disable Metrics/AbcSize
+        def assert_serialized_error(err_json, err)
+          expect(err_json).to be_a(Hash)
+          expect(err_json['name']).to eq(TestError.name)
+          expect(err_json['message']).to eq(err.message)
+
+          err_stack = err_json['stack']
+          backtrace = err.backtrace
+          expect(backtrace).not_to be_nil # just to be sure
+          backtrace.each do |line|
+            expect(err_stack).to include(line)
+          end
+        end
+        # rubocop:enable Metrics/AbcSize
+
         it 'supports tagged logging' do
           logger = Loggers.new_json_logger(out)
           logger = ActiveSupport::TaggedLogging.new(logger)
@@ -38,25 +61,62 @@ module BerkeleyLibrary
           begin
             raise TestError, msg
           rescue TestError => e
-            ex = e
             Loggers.new_json_logger(out).error(e)
           end
 
           logged_json = JSON.parse(out.string)
-          expect(logged_json['msg']).to eq(msg)
-          err_json = logged_json['err']
-          expect(err_json).to be_a(Hash)
-          expect(err_json['name']).to eq(TestError.name)
-          expect(err_json['message']).to eq(msg)
+          expect(logged_json['msg']).to eq(e.message)
+          assert_serialized_error(logged_json['err'], e)
+        end
 
-          err_stack = err_json['stack']
-          backtrace = ex.backtrace
-          expect(backtrace).not_to be_nil # just to be sure
-          backtrace.each do |line|
-            expect(err_stack).to include(line)
+        # rubocop:disable Naming/RescuedExceptionsVariableName
+        it 'includes the error cause' do
+          msg_outer = 'Help I am trapped in the outer part of a unit test'
+          msg_inner = 'Help I am trapped in the inner part of a unit test'
+
+          begin
+            raise TestError, msg_inner
+          rescue TestError => ex_inner
+            begin
+              raise TestError, msg_outer
+            rescue TestError => ex_outer
+              Loggers.new_json_logger(out).error(ex_outer)
+            end
           end
+
+          expect(ex_outer.cause).to eq(ex_inner) # just to be sure
+
+          logged_json = JSON.parse(out.string)
+          expect(logged_json['msg']).to eq(ex_outer.message)
+
+          err_json = logged_json['err']
+          assert_serialized_error(err_json, ex_outer)
+
+          cause_json = err_json['cause']
+          expect(cause_json).not_to be_nil
+          assert_serialized_error(cause_json, ex_inner)
         end
       end
+      # rubocop:enable Naming/RescuedExceptionsVariableName
+
+      # rubocop:disable Naming/RescuedExceptionsVariableName
+      it 'handles pathological circular references' do
+        msg_outer = 'Help I am trapped in the outer part of a unit test'
+        msg_inner = 'Help I am trapped in the inner part of a unit test'
+
+        begin
+          raise TestError, msg_inner
+        rescue TestError => ex_inner
+          begin
+            raise TestError, msg_outer
+          rescue TestError => ex_outer
+            ex_inner.cause = ex_outer
+          end
+        end
+
+        expect { Loggers.new_json_logger(out).error(ex_outer) }.not_to raise_error(SystemStackError)
+      end
+      # rubocop:enable Naming/RescuedExceptionsVariableName
 
       describe :default_logger do
         it 'returns a readable $stdout logger' do
@@ -132,7 +192,7 @@ module BerkeleyLibrary
             end
           end
 
-          it 'logs an error with cause and backtrace' do
+          it 'logs an error with backtrace' do
             msg_txt = 'message text'
             ex_msg = 'Help I am trapped in a unit test'
 
@@ -153,6 +213,37 @@ module BerkeleyLibrary
               expect(logged_txt).to include(line)
             end
           end
+
+          # rubocop:disable Naming/RescuedExceptionsVariableName
+          it 'includes the error cause' do
+            msg_outer = 'Help I am trapped in the outer part of a unit test'
+            msg_inner = 'Help I am trapped in the inner part of a unit test'
+
+            begin
+              raise TestError, msg_inner
+            rescue TestError => ex_inner
+              begin
+                raise TestError, msg_outer
+              rescue TestError => ex_outer
+                Loggers.new_readable_logger(out).error(ex_outer)
+              end
+            end
+
+            expect(ex_outer.cause).to eq(ex_inner) # just to be sure
+
+            logged_txt = out.string
+            [ex_inner, ex_outer].each do |ex|
+              msg = ex.message
+              expect(logged_txt).to include(msg)
+
+              backtrace = ex.backtrace
+              expect(backtrace).not_to be_nil # just to be sure
+              backtrace.each do |line|
+                expect(logged_txt).to include(line)
+              end
+            end
+          end
+          # rubocop:enable Naming/RescuedExceptionsVariableName
 
         end
 
@@ -274,5 +365,6 @@ module BerkeleyLibrary
         end
       end
     end
+
   end
 end
