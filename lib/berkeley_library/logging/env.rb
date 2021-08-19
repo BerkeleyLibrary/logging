@@ -1,6 +1,6 @@
 require 'active_support/string_inquirer'
 
-module UCBLIT
+module BerkeleyLibrary
   module Logging
     class << self
       FALLBACK_ENV = 'development'.freeze

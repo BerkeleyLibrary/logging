@@ -1,10 +1,10 @@
 if defined?(Rails)
-  require 'ucblit/logging/railtie'
+  require 'berkeley_library/logging/railtie'
 else
-  require 'ucblit/logging/configurator'
+  require 'berkeley_library/logging/configurator'
 end
 
-module UCBLIT
+module BerkeleyLibrary
   # Include this module to get access to a shared global logger.
   module Logging
     def logger
@@ -17,7 +17,7 @@ module UCBLIT
 
     class << self
       def logger
-        @logger ||= UCBLIT::Logging::Loggers.default_logger
+        @logger ||= BerkeleyLibrary::Logging::Loggers.default_logger
       end
 
       def logger=(v)

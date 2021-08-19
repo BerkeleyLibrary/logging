@@ -1,4 +1,4 @@
-module UCBLIT
+module BerkeleyLibrary
   module Logging
     module Events
       class << self

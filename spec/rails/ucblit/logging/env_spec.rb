@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module UCBLIT
+module BerkeleyLibrary
   describe Logging do
 
     attr_reader :orig_rails_env

@@ -1,7 +1,7 @@
 require 'standalone_helper'
 require 'json'
 
-module UCBLIT
+module BerkeleyLibrary
   module Logging
     describe Loggers do
       attr_reader :out
@@ -223,7 +223,7 @@ module UCBLIT
         end
 
         after(:each) do
-          UCBLIT::Logging.instance_variable_set(:@env, nil)
+          BerkeleyLibrary::Logging.instance_variable_set(:@env, nil)
         end
 
         it 'returns a readable $stdout logger if given no config' do
@@ -234,7 +234,7 @@ module UCBLIT
         end
 
         it 'returns a file logger in test' do
-          UCBLIT::Logging.env = 'test'
+          BerkeleyLibrary::Logging.env = 'test'
           logger = Loggers.new_default_logger(config)
           expect(logger).not_to be_nil
           logdev = logger.instance_variable_get(:@logdev)
@@ -242,7 +242,7 @@ module UCBLIT
         end
 
         it 'returns a stdout logger in production' do
-          UCBLIT::Logging.env = 'production'
+          BerkeleyLibrary::Logging.env = 'production'
           stdout_orig = $stdout
           stdout_tmp = StringIO.new
           begin
@@ -258,7 +258,7 @@ module UCBLIT
         end
 
         it 'returns a stdout logger in development' do
-          UCBLIT::Logging.env = 'development'
+          BerkeleyLibrary::Logging.env = 'development'
           logger = Loggers.new_default_logger(config)
           expect(logger).not_to be_nil
           logdev = logger.instance_variable_get(:@logdev)
@@ -269,7 +269,7 @@ module UCBLIT
         end
 
         it 'fails on an unsupported environment' do
-          UCBLIT::Logging.env = 'some-unsupported-environment'
+          BerkeleyLibrary::Logging.env = 'some-unsupported-environment'
           expect { Loggers.new_default_logger(config) }.to raise_error(ArgumentError)
         end
       end

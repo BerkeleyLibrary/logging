@@ -1,7 +1,7 @@
 require 'rubygems/gem_runner'
-require 'ucblit/logging/module_info'
+require 'berkeley_library/logging/module_info'
 
-module UCBLIT
+module BerkeleyLibrary
   module Logging
     class << self
       def project_root
@@ -31,7 +31,7 @@ module UCBLIT
       def output_file
         @output_file ||= begin
           gem_name = File.basename(gemspec_file, '.*')
-          version = UCBLIT::Logging::ModuleInfo::VERSION
+          version = BerkeleyLibrary::Logging::ModuleInfo::VERSION
           basename = "#{gem_name}-#{version}.gem"
           File.join(artifacts_dir, basename)
         end
@@ -49,8 +49,8 @@ module UCBLIT
   end
 end
 
-desc "Build #{UCBLIT::Logging.gemspec_basename} as #{UCBLIT::Logging.output_file_relative}"
+desc "Build #{BerkeleyLibrary::Logging.gemspec_basename} as #{BerkeleyLibrary::Logging.output_file_relative}"
 task :gem do
-  args = ['build', UCBLIT::Logging.gemspec_file, "--output=#{UCBLIT::Logging.output_file}"]
+  args = ['build', BerkeleyLibrary::Logging.gemspec_file, "--output=#{BerkeleyLibrary::Logging.output_file}"]
   Gem::GemRunner.new.run(args)
 end

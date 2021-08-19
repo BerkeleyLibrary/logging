@@ -7,17 +7,17 @@ ruby_version = begin
   File.read(ruby_version_file).strip
 end
 
-require 'ucblit/logging/module_info'
+require 'berkeley_library/logging/module_info'
 
 Gem::Specification.new do |spec|
-  spec.name = UCBLIT::Logging::ModuleInfo::NAME
-  spec.author = UCBLIT::Logging::ModuleInfo::AUTHOR
-  spec.email = UCBLIT::Logging::ModuleInfo::AUTHOR_EMAIL
-  spec.summary = UCBLIT::Logging::ModuleInfo::SUMMARY
-  spec.description = UCBLIT::Logging::ModuleInfo::DESCRIPTION
-  spec.license = UCBLIT::Logging::ModuleInfo::LICENSE
-  spec.version = UCBLIT::Logging::ModuleInfo::VERSION
-  spec.homepage = UCBLIT::Logging::ModuleInfo::HOMEPAGE
+  spec.name = BerkeleyLibrary::Logging::ModuleInfo::NAME
+  spec.author = BerkeleyLibrary::Logging::ModuleInfo::AUTHOR
+  spec.email = BerkeleyLibrary::Logging::ModuleInfo::AUTHOR_EMAIL
+  spec.summary = BerkeleyLibrary::Logging::ModuleInfo::SUMMARY
+  spec.description = BerkeleyLibrary::Logging::ModuleInfo::DESCRIPTION
+  spec.license = BerkeleyLibrary::Logging::ModuleInfo::LICENSE
+  spec.version = BerkeleyLibrary::Logging::ModuleInfo::VERSION
+  spec.homepage = BerkeleyLibrary::Logging::ModuleInfo::HOMEPAGE
 
   spec.files = `git ls-files -z`.split("\x0")
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})

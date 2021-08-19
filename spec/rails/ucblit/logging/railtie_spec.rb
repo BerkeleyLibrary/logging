@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module UCBLIT
+module BerkeleyLibrary
   module Logging
     describe Railtie do
       attr_reader :app
@@ -17,7 +17,7 @@ module UCBLIT
         attr_reader :bootstrap_logger_initializer
 
         before(:each) do
-          expected_file, _line = Module.const_source_location(UCBLIT::Logging::Railtie.name)
+          expected_file, _line = Module.const_source_location(BerkeleyLibrary::Logging::Railtie.name)
           @logging_initializer = app.initializers.find do |init|
             block = init.block
             file, _line = block.source_location
@@ -38,7 +38,7 @@ module UCBLIT
           logging_initializer.run(app)
           bootstrap_logger_initializer.run(app)
 
-          expect(Rails.logger).to be_a(UCBLIT::Logging::Logger)
+          expect(Rails.logger).to be_a(BerkeleyLibrary::Logging::Logger)
         end
       end
     end

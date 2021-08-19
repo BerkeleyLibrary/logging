@@ -1,8 +1,8 @@
 require 'rails_helper'
 require 'json'
-require 'ucblit/logging'
+require 'berkeley_library/logging'
 
-module UCBLIT
+module BerkeleyLibrary
   module Logging
     describe Formatters do
       describe :new_json_formatter do

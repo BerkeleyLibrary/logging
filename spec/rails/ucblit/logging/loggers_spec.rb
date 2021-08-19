@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'rails'
 
-module UCBLIT
+module BerkeleyLibrary
   module Logging
     describe Loggers do
       attr_reader :orig_rails_env
@@ -78,7 +78,7 @@ module UCBLIT
         end
 
         it 'returns a file logger in test' do
-          UCBLIT::Logging.env = 'test'
+          BerkeleyLibrary::Logging.env = 'test'
           logger = Loggers.new_default_logger(config)
           expect(logger).not_to be_nil
           logdev = logger.instance_variable_get(:@logdev)
@@ -86,7 +86,7 @@ module UCBLIT
         end
 
         it 'returns a stdout logger in production' do
-          UCBLIT::Logging.env = 'production'
+          BerkeleyLibrary::Logging.env = 'production'
           stdout_orig = $stdout
           stdout_tmp = StringIO.new
           begin
@@ -102,7 +102,7 @@ module UCBLIT
         end
 
         it 'returns a stdout logger in development' do
-          UCBLIT::Logging.env = 'development'
+          BerkeleyLibrary::Logging.env = 'development'
           logger = Loggers.new_default_logger(config)
           expect(logger).not_to be_nil
           logdev = logger.instance_variable_get(:@logdev)

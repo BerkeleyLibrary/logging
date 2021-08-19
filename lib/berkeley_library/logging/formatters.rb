@@ -1,6 +1,6 @@
 require 'ougai'
 
-module UCBLIT
+module BerkeleyLibrary
   module Logging
     module Formatters
 

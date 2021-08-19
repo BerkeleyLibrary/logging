@@ -1,9 +1,9 @@
-require 'ucblit/logging/env'
-require 'ucblit/logging/events'
-require 'ucblit/logging/formatters'
-require 'ucblit/logging/loggers'
+require 'berkeley_library/logging/env'
+require 'berkeley_library/logging/events'
+require 'berkeley_library/logging/formatters'
+require 'berkeley_library/logging/loggers'
 
-module UCBLIT
+module BerkeleyLibrary
   module Logging
     class Configurator
       class << self

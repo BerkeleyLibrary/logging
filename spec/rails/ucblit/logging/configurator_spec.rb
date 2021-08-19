@@ -1,9 +1,9 @@
 require 'rails_helper'
 require 'rails'
 require 'lograge'
-require 'ucblit/logging'
+require 'berkeley_library/logging'
 
-module UCBLIT
+module BerkeleyLibrary
   module Logging
     describe Configurator do
       describe :configure! do

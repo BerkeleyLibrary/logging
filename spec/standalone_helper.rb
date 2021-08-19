@@ -22,4 +22,4 @@ end
 # ------------------------------------------------------------
 # Code under test
 
-require 'ucblit/logging'
+require 'berkeley_library/logging'

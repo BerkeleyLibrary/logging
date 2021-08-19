@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module UCBLIT
+module BerkeleyLibrary
   describe Logging do
 
     def logger_defined?

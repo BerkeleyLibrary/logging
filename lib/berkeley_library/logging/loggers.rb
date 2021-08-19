@@ -1,8 +1,8 @@
-require 'ucblit/logging/env'
-require 'ucblit/logging/formatters'
-require 'ucblit/logging/logger'
+require 'berkeley_library/logging/env'
+require 'berkeley_library/logging/formatters'
+require 'berkeley_library/logging/logger'
 
-module UCBLIT
+module BerkeleyLibrary
   module Logging
     module Loggers
       class << self

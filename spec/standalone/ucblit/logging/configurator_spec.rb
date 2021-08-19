@@ -2,7 +2,7 @@ require 'standalone_helper'
 require 'ostruct'
 require 'lograge'
 
-module UCBLIT
+module BerkeleyLibrary
   module Logging
     describe Configurator do
       describe :configure! do
