@@ -34,7 +34,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'brakeman', '~> 4.9'
   spec.add_development_dependency 'bundle-audit', '~> 0.1'
   spec.add_development_dependency 'ci_reporter_rspec', '~> 1.0'
-  spec.add_development_dependency 'colorize', '~> 0.8'
   spec.add_development_dependency 'dotenv', '~> 2.7'
   spec.add_development_dependency 'irb', '~> 1.2' # workaroundfor https://github.com/bundler/bundler/issues/6929
   spec.add_development_dependency 'listen', '>= 3.0.5', '< 3.2'
