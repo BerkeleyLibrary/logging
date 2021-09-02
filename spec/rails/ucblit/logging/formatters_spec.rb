@@ -67,6 +67,15 @@ module BerkeleyLibrary
           expect(additional_data['another_string']).to eq(expected_string)
           expect(additional_data['more_strings']).to eq([expected_string, expected_string])
         end
+
+        it 'removes ANSI formatting from ActiveRecord logs' do
+          original = "  \e[1m\e[36mLendingItem Load (2.0ms)\e[0m  \e[1m\e[34mSELECT \"lending_items\".* FROM \"lending_items\" WHERE \"lending_items\".\"directory\" = $1 LIMIT $2\e[0m  [[\"directory\", \"b135297126_C068087930\"], [\"LIMIT\", 1]]"
+          expected = '  LendingItem Load (2.0ms)  SELECT "lending_items".* FROM "lending_items" WHERE "lending_items"."directory" = $1 LIMIT $2  [["directory", "b135297126_C068087930"], ["LIMIT", 1]]'
+          logger.info(original)
+          logged_json = JSON.parse(out.string)
+          msg = logged_json['msg']
+          expect(msg).to eq(expected)
+        end
       end
 
       describe :ensure_hash do

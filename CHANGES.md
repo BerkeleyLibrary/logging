@@ -1,3 +1,8 @@
+# 0.2.3 (2021-09-02)
+
+- JSON formatter now strips all ANSI 7-bit C1 escapes from strings
+  (fixes [#1](https://github.com/BerkeleyLibrary/logging/issues/1) properly)
+
 # 0.2.2 (2021-09-02)
 
 - JSON formatter now strips ANSI color escapes from strings
