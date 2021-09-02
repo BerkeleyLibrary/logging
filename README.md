@@ -1,7 +1,7 @@
 # BerkeleyLibrary::Logging
 
 [![Build Status](https://github.com/BerkeleyLibrary/logging/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/BerkeleyLibrary/logging/actions/workflows/build.yml)
-[![Gem Version](https://img.shields.io/gem/v/berkeley_library-logging.svg)](https://github.com/BerkeleyLibrary/logging/releases)
+[![Gem Version](https://img.shields.io/gem/v/berkeley_library-logging.svg)](https://rubygems.org/gems/berkeley_library-logging/)
 
 Opinionated logging for UCB Library IT Rails applications.
 
