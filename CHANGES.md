@@ -1,3 +1,8 @@
+# 0.2.2 (2021-09-02)
+
+- JSON formatter now strips ANSI color escapes from strings
+  (fixes [#1](https://github.com/BerkeleyLibrary/logging/issues/1))
+
 # 0.2.1 (2021-08-19)
 
 - Recursively log error cause
