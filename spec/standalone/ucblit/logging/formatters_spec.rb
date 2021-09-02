@@ -1,26 +1,69 @@
 require 'standalone_helper'
 require 'json'
+require 'colorize'
 require 'berkeley_library/logging'
 
 module BerkeleyLibrary
   module Logging
     describe Formatters do
       describe :new_json_formatter do
-        it 'supports tagged logging' do
-          out = StringIO.new
-          logger = Logger.new(out)
-          logger.formatter = Formatters.new_json_formatter
+        attr_reader :out, :logger
 
-          logger = ActiveSupport::TaggedLogging.new(logger)
+        before(:each) do
+          @out = StringIO.new
+          @logger = Logger.new(out)
+          logger.formatter = Formatters.new_json_formatter
+        end
+
+        it 'supports tagged logging' do
+          tagged_logger = ActiveSupport::TaggedLogging.new(logger)
 
           expected_tag = 'hello'
           expected_msg = 'this is a test'
 
-          logger.tagged(expected_tag) { logger.info(expected_msg) }
+          tagged_logger.tagged(expected_tag) { tagged_logger.info(expected_msg) }
 
           logged_json = JSON.parse(out.string)
           expect(logged_json['msg']).to eq(expected_msg)
           expect(logged_json['tags']).to eq([expected_tag])
+        end
+
+        it 'decolorizes ANSI-colored strings' do
+          colors = %i[red green yellow blue magenta cyan]
+          colorized_string = colors.map { |c| c.to_s.colorize(c) }.join(' ')
+          expect(colorized_string).to include("\u001b") # just to be sure
+
+          expected_string = colors.map(&:to_s).join(' ')
+
+          logger.info(colorized_string)
+          logged_json = JSON.parse(out.string)
+          msg = logged_json['msg']
+          expect(msg).not_to include("\u001b")
+          expect(msg).to eq(expected_string)
+        end
+
+        it 'decolorizes ANSI-colored strings in attached data' do
+          colors = %i[red green yellow blue magenta cyan]
+          colorized_string = colors.map { |c| c.to_s.colorize(c) }.join(' ')
+          expect(colorized_string).to include("\u001b") # just to be sure
+
+          expected_string = colors.map(&:to_s).join(' ')
+
+          data = {
+            the_string: colorized_string,
+            additional_data: {
+              another_string: colorized_string,
+              more_strings: [colorized_string, colorized_string]
+            }
+          }
+          logger.info('a colorized string', data)
+
+          logged_json = JSON.parse(out.string)
+          data = logged_json
+          expect(data['the_string']).to eq(expected_string)
+          additional_data = data['additional_data']
+          expect(additional_data['another_string']).to eq(expected_string)
+          expect(additional_data['more_strings']).to eq([expected_string, expected_string])
         end
       end
 

@@ -14,6 +14,20 @@ module BerkeleyLibrary
         Rails.env = orig_rails_env
       end
 
+      describe :new_readable_logger do
+        it 'logs ANSI colors' do
+          out = StringIO.new
+
+          logger = Loggers.new_readable_logger(out)
+          colors = %i[red green yellow blue magenta cyan]
+          colorized_string = colors.map { |c| c.to_s.colorize(c) }.join(' ')
+          expect(colorized_string).to include("\u001b") # just to be sure
+
+          logger.info(colorized_string)
+          expect(out.string).to include(colorized_string)
+        end
+      end
+
       describe :new_json_logger do
         it 'supports tagged logging' do
           out = StringIO.new

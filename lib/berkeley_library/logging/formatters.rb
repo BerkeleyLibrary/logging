@@ -23,6 +23,15 @@ module BerkeleyLibrary
 
           { msg: message }
         end
+
+        def decolorize(message)
+          return unless message
+          return message.uncolorize if message.is_a?(String)
+          return message.map { |v| decolorize(v) } if message.is_a?(Array)
+          return message.transform_values { |v| decolorize(v) } if message.is_a?(Hash)
+
+          message
+        end
       end
 
       # ------------------------------------------------------------
@@ -78,11 +87,12 @@ module BerkeleyLibrary
 
         def _call(severity, time, progname, data)
           original_data = Formatters.ensure_hash(data)
+          decolorized_data = Formatters.decolorize(original_data)
 
           # Ougai::Formatters::Bunyan replaces the human-readable severity string
           # with a numeric level, so we add it here as a separate attribute
           severity = ensure_human_readable(severity)
-          merged_data = { severity: severity }.merge(original_data)
+          merged_data = { severity: severity }.merge(decolorized_data)
           super(severity, time, progname, merged_data)
         end
 

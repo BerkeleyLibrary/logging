@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'activesupport', '~> 6.0'
   spec.add_dependency 'amazing_print', '~> 1.1'
+  spec.add_dependency 'colorize', '~> 0.8.1'
   spec.add_dependency 'lograge', '~> 0.11'
   spec.add_dependency 'ougai', '~> 1.8'
 

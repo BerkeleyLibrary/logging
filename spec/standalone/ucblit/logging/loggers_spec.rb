@@ -1,5 +1,6 @@
 require 'standalone_helper'
 require 'json'
+require 'colorize'
 
 module BerkeleyLibrary
   module Logging
@@ -21,6 +22,18 @@ module BerkeleyLibrary
 
       after(:each) do
         Object.send(:remove_const, :TestError)
+      end
+
+      describe :new_readable_logger do
+        it 'logs ANSI colors' do
+          logger = Loggers.new_readable_logger(out)
+          colors = %i[red green yellow blue magenta cyan]
+          colorized_string = colors.map { |c| c.to_s.colorize(c) }.join(' ')
+          expect(colorized_string).to include("\u001b") # just to be sure
+
+          logger.info(colorized_string)
+          expect(out.string).to include(colorized_string)
+        end
       end
 
       describe :new_json_logger do
