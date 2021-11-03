@@ -35,7 +35,26 @@ module BerkeleyLibrary
             lograge = config.lograge
 
             params = { authenticity_token: '8675309' }
-            session = { _session_id: '12345', _csrf_token: '67890' }
+
+            session = instance_double(ActionDispatch::Request::Session)
+            session_hash =
+              {
+                'session_id' => '17cd06b1b7cb9744e8fa626ef5f37c67',
+                'user' =>
+                  { 'id' => 71,
+                    'user_name' => 'Ms. Magoo',
+                    'created_at' => '2021-10-14T09:24:42.730-07:00',
+                    'updated_at' => '2021-10-14T09:24:42.729-07:00',
+                    'user_role' => 'Administrator',
+                    'user_active' => true,
+                    'uid' => 1_684_944,
+                    'updated_by' => 'Dr. Pibb' },
+                'expires_at' => '2021-11-03T12:30:01.281-07:00',
+                '_csrf_token' => 'HiN1xUxFcOvWvoe2nwoBSGlmGSN6x0jprpSqDrzquxA='
+              }
+            allow(session).to receive(:to_hash).and_return(session_hash)
+
+            session = session_hash
             request = OpenStruct.new(
               origin: 'http://example.org:3000',
               base_url: 'https://example.org:3443',
@@ -84,10 +103,7 @@ module BerkeleyLibrary
               expect(data[attr]).to eq(request.send(attr))
             end
 
-            Events::LOGGED_SESSION_ATTRIBUTES.each do |attr|
-              expect(data[attr]).to eq(session[attr])
-            end
-
+            expect(data[:session]).to eq(session_hash)
           end
 
           it 'formats Lograge data as a hash' do

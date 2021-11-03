@@ -132,6 +132,9 @@ module BerkeleyLibrary
         rescue SystemStackError => e
           RSpec::Expectations.fail_with("Expected no SystemStackError, but got #{e}: #{e.backtrace[0]}")
         end
+
+        expect(out.string).to include(msg_outer)
+        expect(out.string).to include(msg_inner)
       end
       # rubocop:enable Naming/RescuedExceptionsVariableName
 
