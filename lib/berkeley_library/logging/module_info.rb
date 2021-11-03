@@ -7,7 +7,7 @@ module BerkeleyLibrary
       SUMMARY = 'Opinionated Ruby/Rails logging for UC Berkeley Library'.freeze
       DESCRIPTION = 'A gem providing shared logging code for UC Berkeley Library gems and Rails applications'.freeze
       LICENSE = 'MIT'.freeze
-      VERSION = '0.2.3'.freeze
+      VERSION = '0.2.4'.freeze
       HOMEPAGE = 'https://github.com/BerkeleyLibrary/logging'.freeze
 
       private_class_method :new

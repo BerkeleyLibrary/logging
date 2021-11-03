@@ -1,3 +1,13 @@
+# 0.2.4 (2021-11-02)
+
+- Rails event logs now include the following, in addition to the
+  headers already logged:
+
+  - `request.origin`
+  - `request.base_url`
+  - `request.x_csrf_token`
+  - `params[:authenticity_token]`
+
 # 0.2.3 (2021-09-02)
 
 - JSON formatter now strips all ANSI 7-bit C1 escapes from strings
