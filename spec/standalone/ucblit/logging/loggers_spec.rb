@@ -127,7 +127,11 @@ module BerkeleyLibrary
           end
         end
 
-        expect { Loggers.new_json_logger(out).error(ex_outer) }.not_to raise_error(SystemStackError)
+        begin
+          Loggers.new_json_logger(out).error(ex_outer)
+        rescue SystemStackError => e
+          RSpec::Expectations.fail_with("Expected no SystemStackError, but got #{e}: #{e.backtrace[0]}")
+        end
       end
       # rubocop:enable Naming/RescuedExceptionsVariableName
 
