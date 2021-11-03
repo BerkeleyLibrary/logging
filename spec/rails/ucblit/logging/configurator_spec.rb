@@ -35,10 +35,12 @@ module BerkeleyLibrary
             lograge = config.lograge
 
             params = { authenticity_token: '8675309' }
+            session = { _session_id: '12345', _csrf_token: '67890' }
             request = OpenStruct.new(
               origin: 'http://example.org:3000',
               base_url: 'https://example.org:3443',
-              x_csrf_token: '5551212'
+              x_csrf_token: '5551212',
+              session: session
             )
 
             request_headers = {
@@ -73,11 +75,19 @@ module BerkeleyLibrary
             expect(data).to be_a(Hash)
             expect(data[:time]).to be_a(Time)
             expect(data[:time].to_i).to be_within(60).of(Time.now.to_i)
+
             expected_header_map.each { |xh, rh| expect(data[xh]).to eq(request_headers[rh]) }
+
             expect(data[:authenticity_token]).to eq(params[:authenticity_token])
-            %i[origin base_url x_csrf_token].each do |attr|
+
+            Events::LOGGED_REQUEST_ATTRIBUTES.each do |attr|
               expect(data[attr]).to eq(request.send(attr))
             end
+
+            Events::LOGGED_SESSION_ATTRIBUTES.each do |attr|
+              expect(data[attr]).to eq(session[attr])
+            end
+
           end
 
           it 'formats Lograge data as a hash' do

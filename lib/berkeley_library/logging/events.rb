@@ -1,19 +1,21 @@
 module BerkeleyLibrary
   module Logging
     module Events
+      LOGGED_REQUEST_ATTRIBUTES = %i[origin base_url x_csrf_token].freeze
+      LOGGED_SESSION_ATTRIBUTES = %i[_session_id _csrf_token].freeze
+      LOGGED_PARAMETERS = [:authenticity_token].freeze
+      LOGGED_HEADERS = {
+        # yes, RFC 2616 uses a variant spelling for 'referrer', it's a known issue
+        # https://tools.ietf.org/html/rfc2616#section-14.36
+        referer: 'HTTP_REFERER',
+        request_id: 'action_dispatch.request_id',
+        remote_ip: 'action_dispatch.remote_ip',
+        remote_addr: 'REMOTE_ADDR',
+        x_forwarded_for: 'HTTP_X_FORWARDED_FOR',
+        forwarded: 'HTTP_FORWARDED' # RFC 7239
+      }.freeze
+
       class << self
-        LOGGED_REQUEST_ATTRIBUTES = %i[origin base_url x_csrf_token].freeze
-        LOGGED_PARAMETERS = [:authenticity_token].freeze
-        LOGGED_HEADERS = {
-          # yes, RFC 2616 uses a variant spelling for 'referrer', it's a known issue
-          # https://tools.ietf.org/html/rfc2616#section-14.36
-          referer: 'HTTP_REFERER',
-          request_id: 'action_dispatch.request_id',
-          remote_ip: 'action_dispatch.remote_ip',
-          remote_addr: 'REMOTE_ADDR',
-          x_forwarded_for: 'HTTP_X_FORWARDED_FOR',
-          forwarded: 'HTTP_FORWARDED' # RFC 7239
-        }.freeze
 
         def extract_data_for_lograge
           ->(event) { extract_event_data(event) }
@@ -28,6 +30,9 @@ module BerkeleyLibrary
 
             request_attributes = extract_request_attributes(event)
             event_data.merge!(request_attributes)
+
+            session_attributes = extract_session_attributes(event)
+            event_data.merge!(session_attributes)
 
             param_values = extract_param_values(event)
             event_data.merge!(param_values)
@@ -52,6 +57,17 @@ module BerkeleyLibrary
             next unless (attr_val = request.send(attr))
 
             values[attr] = attr_val
+          end
+        end
+
+        def extract_session_attributes(event)
+          return {} unless (request = event.payload[:request])
+          return {} unless (session = request.session)
+
+          LOGGED_SESSION_ATTRIBUTES.each_with_object({}) do |attr, values|
+            next unless (session_val = session[attr])
+
+            values[attr] = session_val.to_s
           end
         end
 
