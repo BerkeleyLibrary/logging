@@ -53,12 +53,12 @@
     <orderEntry type="library" scope="PROVIDED" name="mini_mime (v1.1.1, RVM: ruby-2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="minitest (v5.14.4, RVM: ruby-2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="nio4r (v2.5.8, RVM: ruby-2.7.4) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="nokogiri (v1.12.4, RVM: ruby-2.7.4) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="nokogiri (v1.12.5, RVM: ruby-2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="oj (v3.13.7, RVM: ruby-2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ougai (v1.9.1, RVM: ruby-2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="parallel (v1.21.0, RVM: ruby-2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="parser (v3.0.2.0, RVM: ruby-2.7.4) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="racc (v1.5.2, RVM: ruby-2.7.4) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="racc (v1.6.0, RVM: ruby-2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rack (v2.2.3, RVM: ruby-2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rack-test (v1.1.0, RVM: ruby-2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rails (v6.1.4.1, RVM: ruby-2.7.4) [gem]" level="application" />
@@ -97,6 +97,10 @@
     <orderEntry type="library" scope="PROVIDED" name="websocket-extensions (v0.1.5, RVM: ruby-2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="zeitwerk (v2.4.2, RVM: ruby-2.7.4) [gem]" level="application" />
   </component>
+  <component name="RModuleSettingsStorage">
+    <LOAD_PATH number="2" string0="$MODULE_DIR$/lib" string1="$MODULE_DIR$/spec" />
+    <I18N_FOLDERS number="0" />
+  </component>
   <component name="RakeTasksCache">
     <option name="myRootTask">
       <RakeTaskImpl id="rake">
@@ -110,7 +114,7 @@
           <RakeTaskImpl description="Remove artifacts directory" fullCommand="clean" id="clean" />
           <RakeTaskImpl description="Run all specs in spec directory, with coverage" fullCommand="coverage" id="coverage" />
           <RakeTaskImpl description="Clean, check, build gem" fullCommand="default" id="default" />
-          <RakeTaskImpl description="Build berkeley_library-logging.gemspec as berkeley_library-logging-0.2.3.gem" fullCommand="gem" id="gem" />
+          <RakeTaskImpl description="Build berkeley_library-logging.gemspec as berkeley_library-logging-0.2.4.gem" fullCommand="gem" id="gem" />
           <RakeTaskImpl description="Run RuboCop" fullCommand="rubocop" id="rubocop" />
           <RakeTaskImpl id="rubocop">
             <subtasks>
