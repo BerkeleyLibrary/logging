@@ -19,9 +19,11 @@ end
 # ------------------------------------------------------------
 # Custom tasks
 
-desc 'Remove artifacts directory'
+desc 'Remove artifacts directory, except for .keep file'
 task :clean do
   FileUtils.rm_rf('artifacts')
+  FileUtils.mkdir('artifacts')
+  FileUtils.touch(File.join('artifacts', '.keep'))
 end
 
 desc 'Check test coverage, check code style, check gems for vulnerabilities'
