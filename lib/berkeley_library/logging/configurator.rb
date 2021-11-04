@@ -22,9 +22,13 @@ module BerkeleyLibrary
         def configure_lograge(config)
           return unless config.respond_to?(:lograge)
 
-          config.lograge.tap do |lograge|
+          lograge_config = config.lograge
+
+          custom_options = Events.extract_data_for_lograge(lograge_config)
+
+          lograge_config.tap do |lograge|
             lograge.enabled = true
-            lograge.custom_options = Events.extract_data_for_lograge
+            lograge.custom_options = custom_options
             lograge.formatter = Formatters.lograge_formatter
           end
         end

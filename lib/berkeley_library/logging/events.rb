@@ -3,7 +3,8 @@ require 'berkeley_library/logging/safe_serializer'
 module BerkeleyLibrary
   module Logging
     module Events
-      LOGGED_REQUEST_ATTRIBUTES = %i[origin base_url x_csrf_token session].freeze
+      LOGGED_REQUEST_ATTRIBUTES = %i[origin base_url x_csrf_token].freeze
+      LOGGED_SESSION_ATTRIBUTES = %i[session_id _csrf_token].freeze
       LOGGED_PARAMETERS = [:authenticity_token].freeze
       LOGGED_HEADERS = {
         # yes, RFC 2616 uses a variant spelling for 'referrer', it's a known issue
@@ -18,17 +19,20 @@ module BerkeleyLibrary
 
       class << self
 
-        def extract_data_for_lograge
-          ->(event) { extract_event_data(event.payload) }
+        def extract_data_for_lograge(lograge_config)
+          verbose_session_logging = lograge_config.verbose_session_logging
+
+          ->(event) { extract_event_data(event.payload, verbose_session_logging) }
         end
 
         private
 
-        def extract_event_data(payload)
+        def extract_event_data(payload, verbose_session_logging)
           [
             extract_headers(payload),
             extract_request_attributes(payload),
-            extract_param_values(payload)
+            extract_param_values(payload),
+            extract_session(payload, verbose_session_logging)
           ].inject({ time: Time.now }) do |data, values|
             clean_values = SafeSerializer.serialize(values)
             data.merge(clean_values)
@@ -64,6 +68,26 @@ module BerkeleyLibrary
 
             values[key] = header_val
           end
+        end
+
+        def extract_session(payload, verbose_session_logging)
+          return {} unless (request = payload[:request])
+          return {} unless (session = request.session)
+          return {} unless session.respond_to?(:to_hash)
+
+          session_hash = session_hash(session, verbose_session_logging)
+
+          { session: session_hash }
+        end
+
+        def session_hash(session, verbose)
+          raw_session_hash = session.to_hash
+          return raw_session_hash if verbose
+
+          LOGGED_SESSION_ATTRIBUTES.filter_map do |attr|
+            attr_str = attr.to_s
+            [attr, raw_session_hash[attr_str]] if raw_session_hash.key?(attr_str)
+          end.to_h
         end
       end
     end

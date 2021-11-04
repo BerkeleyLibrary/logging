@@ -30,80 +30,106 @@ module BerkeleyLibrary
             expect(lograge.enabled).to eq(true)
           end
 
-          it 'extracts request info from log events' do
-            Configurator.configure(config)
-            lograge = config.lograge
+          context 'events' do
+            let(:params) { { authenticity_token: '8675309' } }
 
-            params = { authenticity_token: '8675309' }
-
-            session = instance_double(ActionDispatch::Request::Session)
-            session_hash =
+            let(:session_hash) do
               {
                 'session_id' => '17cd06b1b7cb9744e8fa626ef5f37c67',
-                'user' =>
-                  { 'id' => 71,
-                    'user_name' => 'Ms. Magoo',
-                    'created_at' => '2021-10-14T09:24:42.730-07:00',
-                    'updated_at' => '2021-10-14T09:24:42.729-07:00',
-                    'user_role' => 'Administrator',
-                    'user_active' => true,
-                    'uid' => 1_684_944,
-                    'updated_by' => 'Dr. Pibb' },
+                'user' => {
+                  'id' => 71,
+                  'user_name' => 'Ms. Magoo',
+                  'created_at' => '2021-10-14T09:24:42.730-07:00',
+                  'updated_at' => '2021-10-14T09:24:42.729-07:00',
+                  'user_role' => 'Administrator',
+                  'user_active' => true,
+                  'uid' => 1_684_944,
+                  'updated_by' => 'Dr. Pibb'
+                },
                 'expires_at' => '2021-11-03T12:30:01.281-07:00',
                 '_csrf_token' => 'HiN1xUxFcOvWvoe2nwoBSGlmGSN6x0jprpSqDrzquxA='
               }
-            allow(session).to receive(:to_hash).and_return(session_hash)
-
-            session = session_hash
-            request = OpenStruct.new(
-              origin: 'http://example.org:3000',
-              base_url: 'https://example.org:3443',
-              x_csrf_token: '5551212',
-              session: session
-            )
-
-            request_headers = {
-              'HTTP_REFERER' => 'value from HTTP_REFERER',
-              'action_dispatch.request_id' => 'value from action_dispatch.request_id',
-              'action_dispatch.remote_ip' => 'value from action_dispatch.remote_ip',
-              'REMOTE_ADDR' => 'value from REMOTE_ADDR',
-              'HTTP_X_FORWARDED_FOR' => 'value from HTTP_X_FORWARDED_FOR',
-              'HTTP_FORWARDED' => 'value from HTTP_FORWARDED'
-            }
-
-            expected_header_map = {
-              referer: 'HTTP_REFERER',
-              request_id: 'action_dispatch.request_id',
-              remote_ip: 'action_dispatch.remote_ip',
-              remote_addr: 'REMOTE_ADDR',
-              x_forwarded_for: 'HTTP_X_FORWARDED_FOR',
-              forwarded: 'HTTP_FORWARDED'
-            }
-
-            payload = {
-              params: params,
-              request: request,
-              headers: request_headers
-            }
-
-            event = instance_double(ActiveSupport::Notifications::Event)
-            allow(event).to receive(:payload).and_return(payload)
-
-            custom_options = lograge.custom_options
-            data = custom_options.call(event)
-            expect(data).to be_a(Hash)
-            expect(data[:time]).to be_a(Time)
-            expect(data[:time].to_i).to be_within(60).of(Time.now.to_i)
-
-            expected_header_map.each { |xh, rh| expect(data[xh]).to eq(request_headers[rh]) }
-
-            expect(data[:authenticity_token]).to eq(params[:authenticity_token])
-
-            Events::LOGGED_REQUEST_ATTRIBUTES.each do |attr|
-              expect(data[attr]).to eq(request.send(attr))
             end
 
-            expect(data[:session]).to eq(session_hash)
+            let(:request_headers) do
+              {
+                'HTTP_REFERER' => 'value from HTTP_REFERER',
+                'action_dispatch.request_id' => 'value from action_dispatch.request_id',
+                'action_dispatch.remote_ip' => 'value from action_dispatch.remote_ip',
+                'REMOTE_ADDR' => 'value from REMOTE_ADDR',
+                'HTTP_X_FORWARDED_FOR' => 'value from HTTP_X_FORWARDED_FOR',
+                'HTTP_FORWARDED' => 'value from HTTP_FORWARDED'
+              }
+            end
+
+            let(:expected_header_map) do
+              {
+                referer: 'HTTP_REFERER',
+                request_id: 'action_dispatch.request_id',
+                remote_ip: 'action_dispatch.remote_ip',
+                remote_addr: 'REMOTE_ADDR',
+                x_forwarded_for: 'HTTP_X_FORWARDED_FOR',
+                forwarded: 'HTTP_FORWARDED'
+              }
+            end
+
+            attr_reader :session, :request, :payload, :event
+
+            before(:each) do
+              @session = instance_double(ActionDispatch::Request::Session)
+              allow(session).to receive(:to_hash).and_return(session_hash)
+
+              @request = instance_double(ActionDispatch::Request)
+              allow(request).to receive(:origin).and_return('http://example.org:3000')
+              allow(request).to receive(:base_url).and_return('https://example.org:3443')
+              allow(request).to receive(:x_csrf_token).and_return('5551212')
+              allow(request).to receive(:session).and_return(session)
+
+              @payload = {
+                params: params,
+                request: request,
+                headers: request_headers
+              }
+
+              @event = instance_double(ActiveSupport::Notifications::Event)
+              allow(event).to receive(:payload).and_return(payload)
+            end
+
+            it 'extracts request info from log events' do
+              Configurator.configure(config)
+              data = config.lograge.custom_options.call(event)
+
+              expect(data).to be_a(Hash)
+              expect(data[:time]).to be_a(Time)
+              expect(data[:time].to_i).to be_within(60).of(Time.now.to_i)
+
+              expected_header_map.each { |xh, rh| expect(data[xh]).to eq(request_headers[rh]) }
+
+              expect(data[:authenticity_token]).to eq(params[:authenticity_token])
+
+              Events::LOGGED_REQUEST_ATTRIBUTES.each do |attr|
+                expect(data[attr]).to eq(request.send(attr))
+              end
+            end
+
+            it 'includes the entire session if `verbose_session_logging` is true' do
+              config.lograge.verbose_session_logging = true
+              Configurator.configure(config)
+              data = config.lograge.custom_options.call(event)
+
+              expect(data[:session]).to eq(session_hash)
+            end
+
+            it 'includes only the session ID by default' do
+              Configurator.configure(config)
+              data = config.lograge.custom_options.call(event)
+
+              expected_hash = Events::LOGGED_SESSION_ATTRIBUTES.each_with_object({}) do |attr, h|
+                h[attr] = session_hash[attr.to_s]
+              end
+
+              expect(data[:session]).to eq(expected_hash)
+            end
           end
 
           it 'formats Lograge data as a hash' do
