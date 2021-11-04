@@ -1,3 +1,8 @@
+# 0.2.5 (2021-11-04)
+
+- Rails event logs now include a subset of session attributes (`session_id` and `_csrf_token`).
+  Set `Rails.config.lograge.verbose_session_logging` to log the full session hash.
+
 # 0.2.4 (2021-11-02)
 
 - Rails event logs now include the following, in addition to the
