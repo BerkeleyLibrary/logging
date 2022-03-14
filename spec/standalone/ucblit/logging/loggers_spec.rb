@@ -8,7 +8,7 @@ module BerkeleyLibrary
       attr_reader :out
 
       # rubocop:disable Lint/ConstantDefinitionInBlock
-      before(:each) do
+      before do
         @out = StringIO.new
         class ::TestError < StandardError
           attr_writer :cause
@@ -20,7 +20,7 @@ module BerkeleyLibrary
       end
       # rubocop:enable Lint/ConstantDefinitionInBlock
 
-      after(:each) do
+      after do
         Object.send(:remove_const, :TestError)
       end
 
@@ -39,7 +39,6 @@ module BerkeleyLibrary
       describe :new_json_logger do
 
         # TODO: rewrite this as a matcher
-        # rubocop:disable Metrics/AbcSize
         def assert_serialized_error(err_json, err)
           expect(err_json).to be_a(Hash)
           expect(err_json['name']).to eq(TestError.name)
@@ -52,8 +51,6 @@ module BerkeleyLibrary
             expect(err_stack).to include(line)
           end
         end
-        # rubocop:enable Metrics/AbcSize
-
         it 'supports tagged logging' do
           logger = Loggers.new_json_logger(out)
           logger = ActiveSupport::TaggedLogging.new(logger)
@@ -329,11 +326,11 @@ module BerkeleyLibrary
       describe :new_default_logger do
         attr_reader :config
 
-        before(:each) do
+        before do
           @config = OpenStruct.new
         end
 
-        after(:each) do
+        after do
           BerkeleyLibrary::Logging.instance_variable_set(:@env, nil)
         end
 

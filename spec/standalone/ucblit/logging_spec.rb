@@ -25,7 +25,7 @@ module BerkeleyLibrary
       mock_logger_class.new
     end
 
-    before(:each) do
+    before do
       if (@logger_was_defined = logger_defined?)
         @logging_logger_orig = Logging.instance_variable_get(:@logger)
         undefine_logger!
@@ -37,7 +37,7 @@ module BerkeleyLibrary
       allow(Logging::Loggers).to receive(:default_logger).and_return(persistent_default_logger)
     end
 
-    after(:each) do
+    after do
       @logger_was_defined ? reset_logger! : undefine_logger!
     end
 
@@ -75,7 +75,7 @@ module BerkeleyLibrary
     describe 'included' do
       attr_reader :logificator
 
-      before(:each) do
+      before do
         @logificator = Object.new
         @logificator.singleton_class.include(Logging)
       end

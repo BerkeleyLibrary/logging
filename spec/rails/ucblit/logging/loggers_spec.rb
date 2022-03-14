@@ -6,11 +6,11 @@ module BerkeleyLibrary
     describe Loggers do
       attr_reader :orig_rails_env
 
-      before(:each) do
+      before do
         @orig_rails_env = Rails.env
       end
 
-      after(:each) do
+      after do
         Rails.env = orig_rails_env
       end
 
@@ -46,8 +46,9 @@ module BerkeleyLibrary
       end
 
       describe :default_logger do
-        before(:each) { @rails_logger = Rails.logger }
-        after(:each) { Rails.logger = @rails_logger }
+        before { @rails_logger = Rails.logger }
+
+        after { Rails.logger = @rails_logger }
 
         it 'returns the Rails logger' do
           expected_logger = double(::Logger)
@@ -86,7 +87,7 @@ module BerkeleyLibrary
       describe :new_default_logger do
         attr_reader :config
 
-        before(:each) do
+        before do
           app = Class.new(Rails::Application).new
           @config = app.config
         end

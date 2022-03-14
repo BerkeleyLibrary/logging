@@ -6,7 +6,7 @@ module BerkeleyLibrary
       attr_reader :app
       attr_reader :config
 
-      before(:each) do
+      before do
         @app = Class.new(Rails::Application).new
         allow(Rails).to receive(:application).and_return(app)
         @config = app.config
@@ -16,7 +16,7 @@ module BerkeleyLibrary
         attr_reader :logging_initializer
         attr_reader :bootstrap_logger_initializer
 
-        before(:each) do
+        before do
           expected_file, _line = Module.const_source_location(BerkeleyLibrary::Logging::Railtie.name)
           @logging_initializer = app.initializers.find do |init|
             block = init.block

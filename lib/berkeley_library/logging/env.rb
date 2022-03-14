@@ -11,7 +11,7 @@ module BerkeleyLibrary
         return Rails.env if defined?(Rails)
 
         @env ||= begin
-          # Note: can't just self.env= b/c it returns the wrong value -- see
+          # NOTE: can't just self.env= b/c it returns the wrong value -- see
           # https://stackoverflow.com/q/65226532/27358
           env = (ENV['RAILS_ENV'] || ENV['RACK_ENV'] || FALLBACK_ENV)
           ensure_rails_env_like(env)

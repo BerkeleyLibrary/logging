@@ -8,7 +8,7 @@ module BerkeleyLibrary
       describe :configure! do
         attr_reader :config
 
-        before(:each) do
+        before do
           @stdout_orig = $stdout
           $stdout = StringIO.new
 
@@ -16,7 +16,7 @@ module BerkeleyLibrary
           config.lograge = Lograge::OrderedOptions.new
         end
 
-        after(:each) do
+        after do
           $stdout = @stdout_orig
         end
 

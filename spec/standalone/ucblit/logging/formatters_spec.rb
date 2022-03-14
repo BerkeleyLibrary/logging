@@ -9,7 +9,7 @@ module BerkeleyLibrary
       describe :new_json_formatter do
         attr_reader :out, :logger
 
-        before(:each) do
+        before do
           @out = StringIO.new
           @logger = Logger.new(out)
           logger.formatter = Formatters.new_json_formatter
@@ -66,6 +66,7 @@ module BerkeleyLibrary
           expect(additional_data['more_strings']).to eq([expected_string, expected_string])
         end
 
+        # rubocop:disable Layout/LineLength
         it 'removes ANSI formatting from ActiveRecord logs' do
           original = "  \e[1m\e[36mLendingItem Load (2.0ms)\e[0m  \e[1m\e[34mSELECT \"lending_items\".* FROM \"lending_items\" WHERE \"lending_items\".\"directory\" = $1 LIMIT $2\e[0m  [[\"directory\", \"b135297126_C068087930\"], [\"LIMIT\", 1]]"
           expected = '  LendingItem Load (2.0ms)  SELECT "lending_items".* FROM "lending_items" WHERE "lending_items"."directory" = $1 LIMIT $2  [["directory", "b135297126_C068087930"], ["LIMIT", 1]]'
@@ -74,6 +75,7 @@ module BerkeleyLibrary
           msg = logged_json['msg']
           expect(msg).to eq(expected)
         end
+        # rubocop:enable Layout/LineLength
       end
 
       describe :ensure_hash do

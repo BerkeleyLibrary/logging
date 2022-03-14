@@ -8,7 +8,7 @@ if ENV['COVERAGE']
   spec_group_re = %r{(?<=^#{spec_root}/)[^/]+(?=/)}
 
   RSpec.configure do |config|
-    config.before(:each) do |example|
+    config.before do |example|
       abs_path = File.realpath(example.metadata[:absolute_file_path])
       match_data = spec_group_re.match(abs_path)
       raise ArgumentError, "Unable to determine group for example at #{abs_path}" unless match_data

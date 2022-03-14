@@ -5,11 +5,11 @@ module BerkeleyLibrary
 
     attr_reader :orig_rails_env
 
-    before(:each) do
+    before do
       @orig_rails_env = Rails.env
     end
 
-    after(:each) do
+    after do
       Rails.env = orig_rails_env
     end
 

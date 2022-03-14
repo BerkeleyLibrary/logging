@@ -1,9 +1,10 @@
 AllCops:
-  # Exclude generated files
   Exclude:
+    # Exclude generated files
     - 'bin/**/*'
-    - 'node_modules/**/*'
-    - 'artifacts/**/*'
+    - 'db/**/*'
+    - 'out/**/*'
+    # Exclude vendor files in GitHub build
     - 'vendor/**/*'
 
 # Allow one line around block body (Layout/EmptyLines will still disallow two or more)
@@ -42,12 +43,20 @@ Naming/MethodParameterName:
 Naming/VariableNumber:
   Enabled: False
 
+# Whether vertical or horizontal is more readable depends on context
+Style/AccessorGrouping:
+  Enabled: false
+
 # Do what's readable in the context you're in
 Style/AccessModifierDeclarations:
   Enabled: false
 
 # 👎 to cultural imperialism
 Style/AsciiComments:
+  Enabled: false
+
+#
+Style/ClassEqualityComparison:
   Enabled: false
 
 # Seriously?
@@ -88,185 +97,140 @@ Style/SafeNavigation:
   Enabled: false
 
 ############################################################
-# Added in RuboCop 0.80
+# Enable newer cops
 
-Style/HashEachMethods:
+Style/HashEachMethods: # (new in 0.80)
   Enabled: true
-
-Style/HashTransformKeys:
+Style/HashTransformKeys: # (new in 0.80)
   Enabled: true
-
-Style/HashTransformValues:
+Style/HashTransformValues: # (new in 0.80)
   Enabled: true
-  
-############################################################
-# Added in RuboCop 0.81
-
-Lint/StructNewOverride:
+Lint/RaiseException: # (new in 0.81)
   Enabled: true
-
-Lint/RaiseException:
+Lint/StructNewOverride: # (new in 0.81)
   Enabled: true
-
-############################################################
-# Added in RuboCop 0.82
-
-Layout/SpaceAroundMethodCallOperator:
+Layout/SpaceAroundMethodCallOperator: # (new in 0.82)
   Enabled: true
-
-Style/ExponentialNotation:
+Style/ExponentialNotation: # (new in 0.82)
   Enabled: false
-
-############################################################
-# Added in RuboCop 0.83
-
-Layout/EmptyLinesAroundAttributeAccessor:
+Layout/EmptyLinesAroundAttributeAccessor: # (new in 0.83)
+  Enabled: true
+Style/SlicingWithRange: # (new in 0.83)
+  Enabled: true
+Lint/DeprecatedOpenSSLConstant: # (new in 0.84)
+  Enabled: true
+Lint/MixedRegexpCaptureTypes: # (new in 0.85)
+  Enabled: true
+Style/RedundantRegexpCharacterClass: # (new in 0.85)
+  Enabled: true
+Style/RedundantRegexpEscape: # (new in 0.85)
+  Enabled: true
+Style/RedundantFetchBlock: # (new in 0.86)
+  Enabled: true
+Lint/DuplicateRegexpCharacterClassElement: # (new in 1.1)
+  Enabled: true
+Lint/EmptyBlock: # (new in 1.1)
+  Enabled: true
+Lint/ToEnumArguments: # (new in 1.1)
+  Enabled: true
+Lint/UnmodifiedReduceAccumulator: # (new in 1.1)
+  Enabled: true
+Style/ArgumentsForwarding: # (new in 1.1)
+  Enabled: true
+Style/DocumentDynamicEvalDefinition: # (new in 1.1)
+  Enabled: true
+Style/SwapValues: # (new in 1.1)
+  Enabled: true
+Lint/NoReturnInBeginEndBlocks: # (new in 1.2)
+  Enabled: true
+Style/CollectionCompact: # (new in 1.2)
+  Enabled: true
+Style/NegatedIfElseCondition: # (new in 1.2)
+  Enabled: true
+Lint/DuplicateBranch: # (new in 1.3)
+  Enabled: true
+Lint/EmptyClass: # (new in 1.3)
+  Enabled: true
+Style/NilLambda: # (new in 1.3)
+  Enabled: true
+Style/RedundantArgument: # (new in 1.4)
+  Enabled: true
+Lint/UnexpectedBlockArity: # (new in 1.5)
+  Enabled: true
+Layout/SpaceBeforeBrackets: # (new in 1.7)
+  Enabled: true
+Lint/AmbiguousAssignment: # (new in 1.7)
+  Enabled: true
+Style/HashExcept: # (new in 1.7)
+  Enabled: true
+Lint/DeprecatedConstants: # (new in 1.8)
+  Enabled: true
+Lint/LambdaWithoutLiteralBlock: # (new in 1.8)
+  Enabled: true
+Lint/RedundantDirGlobSort: # (new in 1.8)
+  Enabled: true
+Style/EndlessMethod: # (new in 1.8)
+  Enabled: true
+Lint/NumberedParameterAssignment: # (new in 1.9)
+  Enabled: true
+Lint/OrAssignmentToConstant: # (new in 1.9)
+  Enabled: true
+Lint/SymbolConversion: # (new in 1.9)
+  Enabled: true
+Lint/TripleQuotes: # (new in 1.9)
+  Enabled: true
+Style/IfWithBooleanLiteralBranches: # (new in 1.9)
+  Enabled: true
+Gemspec/DateAssignment: # (new in 1.10)
+  Enabled: true
+Style/HashConversion: # (new in 1.10)
+  Enabled: true
+Style/StringChars: # (new in 1.12)
+  Enabled: true
+Lint/EmptyInPattern: # (new in 1.16)
+  Enabled: true
+Style/InPatternThen: # (new in 1.16)
+  Enabled: true
+Style/MultilineInPatternThen: # (new in 1.16)
+  Enabled: true
+Style/QuotedSymbols: # (new in 1.16)
+  Enabled: true
+Layout/LineEndStringConcatenationIndentation: # (new in 1.18)
+  Enabled: true
+Naming/InclusiveLanguage: # (new in 1.18)
+  Enabled: true
+Lint/AmbiguousRange: # new in 1.19
+  Enabled: true
+Style/RedundantSelfAssignmentBranch: # new in 1.19
+  Enabled: true
+Lint/AmbiguousOperatorPrecedence: # new in 1.21
+  Enabled: true
+Lint/IncompatibleIoSelectWithFiberScheduler: # new in 1.21
+  Enabled: true
+Lint/RequireRelativeSelfPath: # new in 1.22
+  Enabled: true
+Security/IoMethods: # new in 1.22
+  Enabled: true
+Style/NumberedParameters: # new in 1.22
+  Enabled: true
+Style/NumberedParametersLimit: # new in 1.22
+  Enabled: true
+Style/SelectByRegexp: # new in 1.22
+  Enabled: true
+Gemspec/RequireMFA: # new in 1.23
+  Enabled: true
+Lint/UselessRuby2Keywords: # new in 1.23
+  Enabled: true
+Style/OpenStructUse: # new in 1.23
+  Enabled: true
+Naming/BlockForwarding: # new in 1.24
+  Enabled: true
+Style/FileRead: # new in 1.24
+  Enabled: true
+Style/FileWrite: # new in 1.24
+  Enabled: true
+Style/MapToHash: # new in 1.24
+  Enabled: true
+Style/NestedFileDirname: # new in 1.26
   Enabled: true
 
-Style/SlicingWithRange:
-  Enabled: true
-
-############################################################
-# Added in RuboCop 0.84
-
-Lint/DeprecatedOpenSSLConstant:
-  Enabled: true
-
-############################################################
-# Added in RuboCop 0.85
-
-Lint/MixedRegexpCaptureTypes:
-  Enabled: true
-
-Style/RedundantRegexpEscape:
-  Enabled: true
-
-Style/RedundantRegexpCharacterClass:
-  Enabled: true
-
-############################################################
-# Added in Rubocop 0.86
-
-Style/RedundantFetchBlock:
-  Enabled: true
-
-############################################################
-# Added in Rubocop 0.87
-
-# Sometimes we separate things for a reason
-Style/AccessorGrouping:
-  Enabled: false
-
-Style/BisectedAttrAccessor:
-  Enabled: true
-
-Style/RedundantAssignment:
-  Enabled: true
-
-############################################################
-# Added in Rubocop 0.88
-
-Lint/DuplicateElsifCondition:
-  Enabled: true
-
-Style/ArrayCoercion:
-  Enabled: true
-
-Style/CaseLikeIf:
-  Enabled: true
-
-Style/HashAsLastArrayItem:
-  Enabled: true
-
-Style/HashLikeCase:
-  Enabled: true
-
-Style/RedundantFileExtensionInRequire:
-  Enabled: true
-
-############################################################
-# Added in Rubocop 0.89
-
-Lint/BinaryOperatorWithIdenticalOperands:
-  Enabled: true
-
-Lint/DuplicateRescueException:
-  Enabled: true
-
-Lint/EmptyConditionalBody:
-  Enabled: true
-
-Lint/FloatComparison:
-  Enabled: true
-
-Lint/MissingSuper:
-  Enabled: true
-
-Lint/OutOfRangeRegexpRef:
-  Enabled: true
-
-Lint/SelfAssignment:
-  Enabled: true
-
-Lint/TopLevelReturnWithArgument:
-  Enabled: true
-
-Lint/UnreachableLoop:
-  Enabled: true
-
-Style/ExplicitBlockArgument:
-  Enabled: true
-
-Style/GlobalStdStream:
-  Enabled: true
-
-Style/OptionalBooleanParameter:
-  Enabled: true
-
-Style/SingleArgumentDig:
-  Enabled: true
-
-Style/SoleNestedConditional:
-  Enabled: true
-
-Style/StringConcatenation:
-  Enabled: true
-
-############################################################
-# Added in Rubocop 0.90
-
-Lint/DuplicateRequire:
-  Enabled: true
-
-Lint/EmptyFile:
-  Enabled: true
-
-Lint/TrailingCommaInAttributeDeclaration:
-  Enabled: true
-
-Lint/UselessMethodDefinition:
-  Enabled: true
-
-Style/CombinableLoops:
-  Enabled: true
-
-Style/KeywordParametersOrder:
-  Enabled: true
-
-Style/RedundantSelfAssignment:
-  Enabled: true
-
-############################################################
-# Added in Rubocop 0.91
-
-Layout/BeginEndAlignment:
-  Enabled: true
-
-Lint/ConstantDefinitionInBlock:
-  Enabled: true
-
-Lint/IdentityComparison:
-  Enabled: true
-
-Lint/UselessTimes:
-  Enabled: true

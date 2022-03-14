@@ -7,7 +7,7 @@ require 'spec_helper'
 # RSpec
 
 RSpec.configure do |config|
-  config.around(:example) do |example|
+  config.around do |example|
     next example.run unless defined?(Rails)
 
     rails_orig = Object.send(:remove_const, :Rails)

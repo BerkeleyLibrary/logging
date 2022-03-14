@@ -10,7 +10,7 @@ module BerkeleyLibrary
 
         attr_reader :config
 
-        before(:each) do
+        before do
           app = Class.new(Rails::Application).new
           allow(Rails).to receive(:application).and_return(app)
           @config = app.config
@@ -75,7 +75,7 @@ module BerkeleyLibrary
 
             attr_reader :session, :request, :payload, :event
 
-            before(:each) do
+            before do
               @session = instance_double(ActionDispatch::Request::Session)
               allow(session).to receive(:to_hash).and_return(session_hash)
 

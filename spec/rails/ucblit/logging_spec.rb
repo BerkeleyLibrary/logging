@@ -25,7 +25,7 @@ module BerkeleyLibrary
       mock_logger_class.new
     end
 
-    before(:each) do
+    before do
       @rails_logger_orig = Rails.logger
       Rails.logger = new_mock_logger
 
@@ -35,7 +35,7 @@ module BerkeleyLibrary
       end
     end
 
-    after(:each) do
+    after do
       @logger_was_defined ? reset_logger! : undefine_logger!
       Rails.logger = @rails_logger_orig
     end
@@ -74,7 +74,7 @@ module BerkeleyLibrary
     describe 'included' do
       attr_reader :logificator
 
-      before(:each) do
+      before do
         @logificator = Object.new
         @logificator.singleton_class.include(Logging)
       end

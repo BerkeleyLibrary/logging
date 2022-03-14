@@ -1,3 +1,4 @@
+require 'active_support/isolated_execution_state'
 require 'active_support/logger'
 require 'ougai'
 require 'berkeley_library/logging/tagged_logging_extensions'

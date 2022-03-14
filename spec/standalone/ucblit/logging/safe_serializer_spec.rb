@@ -82,7 +82,7 @@ module BerkeleyLibrary
 
         context 'exceptions' do
           # rubocop:disable Lint/ConstantDefinitionInBlock
-          before(:each) do
+          before do
             class ::TestError < StandardError
               attr_writer :cause
 
@@ -93,7 +93,7 @@ module BerkeleyLibrary
           end
           # rubocop:enable Lint/ConstantDefinitionInBlock
 
-          after(:each) do
+          after do
             Object.send(:remove_const, :TestError)
           end
 
