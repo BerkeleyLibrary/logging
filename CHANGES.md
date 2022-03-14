@@ -1,3 +1,7 @@
+# 0.2.6 (2022-03-14)
+
+- Add support for Rails 7.
+
 # 0.2.5 (2021-11-04)
 
 - Rails event logs now include a subset of session attributes (`session_id` and `_csrf_token`).
