@@ -1,3 +1,7 @@
+# 0.2.6.1 (2022-05-11)
+
+- Fix `LoadError` on Rails 6.x.
+
 # 0.2.6 (2022-03-14)
 
 - Add support for Rails 7.
