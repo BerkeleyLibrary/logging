@@ -8,7 +8,8 @@ module BerkeleyLibrary
       # Don't use the Railtie's own `config` because configure() needs
       # Rails::Application::Configuration#default_log_file
       initializer('logging.configure_berkeley_library_logging', before: :initialize_logger) do |app|
-        Configurator.configure(app.config)
+        logger = Configurator.configure(app.config)
+        BerkeleyLibrary::Logging.logger = logger
       end
     end
   end

@@ -8,13 +8,17 @@ module BerkeleyLibrary
     class Configurator
       class << self
 
+        # Applies the log configuration to the specified Rails config.
+        #
+        # @return [BerkeleyLibrary::Logging::Logger] the configured logger
         def configure(config)
           configure_lograge(config)
 
-          logger = Loggers.new_default_logger(config)
-          logger.info("Custom logger initialized for environment #{Logging.env.inspect}")
-          configure_webpacker(logger)
-          config.logger = logger
+          Loggers.new_default_logger(config).tap do |logger|
+            logger.info("Custom logger initialized for environment #{Logging.env.inspect}")
+            configure_webpacker(logger)
+            config.logger = logger
+          end
         end
 
         private

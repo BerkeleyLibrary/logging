@@ -23,6 +23,11 @@ module BerkeleyLibrary
           expect(config.logger).to be_a(Logging::Logger)
         end
 
+        it 'returns the logger' do
+          logger = Configurator.configure(config)
+          expect(logger).to be(config.logger)
+        end
+
         describe :configure_lograge! do
           it 'enables Lograge' do
             Configurator.configure(config)
