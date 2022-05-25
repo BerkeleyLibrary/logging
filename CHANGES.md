@@ -1,3 +1,7 @@
+# 0.2.7 (2022-05-25)
+
+- Set `BerkeleyLibrary::Logging.logger` on Railtie initialization
+
 # 0.2.6.2 (2022-05-25)
 
 - Fix `NoMethodError` when calling `BerkeleyLibrary::Logging::Loggers.default_logger` before
