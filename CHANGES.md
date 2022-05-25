@@ -1,3 +1,8 @@
+# 0.2.6.2 (2022-05-25)
+
+- Fix `NoMethodError` when calling `BerkeleyLibrary::Logging::Loggers.default_logger` before
+  Rails is fully initialized
+
 # 0.2.6.1 (2022-05-11)
 
 - Fix `LoadError` on Rails 6.x.
