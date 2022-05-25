@@ -9,13 +9,7 @@ module BerkeleyLibrary
         FALLBACK_LOG_DIR = 'log'.freeze
 
         def default_logger
-          if defined?(Rails)
-            return Rails.logger if Rails.logger
-
-            warn('Rails is defined, but Rails logger is nil')
-          end
-
-          new_default_logger
+          rails_logger || new_default_logger
         end
 
         # TODO: support passing a hash / passing default_log_file
@@ -37,6 +31,13 @@ module BerkeleyLibrary
         end
 
         private
+
+        def rails_logger
+          return unless defined?(Rails)
+          return unless Rails.respond_to?(:logger)
+
+          Rails.logger
+        end
 
         def new_broadcast_logger(config)
           new_json_logger($stdout).tap do |json_logger|
@@ -68,7 +69,7 @@ module BerkeleyLibrary
         end
 
         def workdir
-          return Rails.application.root if defined?(Rails)
+          return Rails.application.root if defined?(Rails) && Rails.respond_to?(:application)
 
           Pathname.getwd
         end
