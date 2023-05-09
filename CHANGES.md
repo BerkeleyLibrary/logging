@@ -1,3 +1,7 @@
+# 0.2.8 (next)
+
+- Log `HTTP_USER_AGENT`
+
 # 0.2.7 (2022-05-25)
 
 - Set `BerkeleyLibrary::Logging.logger` on Railtie initialization

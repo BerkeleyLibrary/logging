@@ -14,7 +14,8 @@ module BerkeleyLibrary
         remote_ip: 'action_dispatch.remote_ip',
         remote_addr: 'REMOTE_ADDR',
         x_forwarded_for: 'HTTP_X_FORWARDED_FOR',
-        forwarded: 'HTTP_FORWARDED' # RFC 7239
+        forwarded: 'HTTP_FORWARDED', # RFC 7239
+        user_agent: 'HTTP_USER_AGENT'
       }.freeze
 
       class << self

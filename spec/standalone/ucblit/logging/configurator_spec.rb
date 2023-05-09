@@ -42,7 +42,8 @@ module BerkeleyLibrary
               'action_dispatch.remote_ip' => 'value from action_dispatch.remote_ip',
               'REMOTE_ADDR' => 'value from REMOTE_ADDR',
               'HTTP_X_FORWARDED_FOR' => 'value from HTTP_X_FORWARDED_FOR',
-              'HTTP_FORWARDED' => 'value from HTTP_FORWARDED'
+              'HTTP_FORWARDED' => 'value from HTTP_FORWARDED',
+              'HTTP_USER_AGENT' => 'value from HTTP_USER_AGENT'
             }
 
             expected_header_map = {
