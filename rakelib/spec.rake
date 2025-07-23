@@ -14,7 +14,7 @@ namespace :spec do
     groups.each do |group|
       desc "Run specs in spec/#{group} directory"
       RSpec::Core::RakeTask.new(group) do |task|
-        task.rspec_opts = %w[--color --format documentation --order default]
+        task.rspec_opts = %w[--color --format documentation]
         task.pattern = "spec/#{group}/**/*_spec.rb"
       end
     end
