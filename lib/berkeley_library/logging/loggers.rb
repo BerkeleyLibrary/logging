@@ -63,7 +63,7 @@ module BerkeleyLibrary
 
         def ensure_log_directory
           File.join(workdir, FALLBACK_LOG_DIR).tap do |log_dir|
-            FileUtils.mkdir(log_dir) unless File.exist?(log_dir)
+            FileUtils.mkdir_p(log_dir)
             raise ArgumentError, "Not a directory: #{log_dir}" unless File.directory?(log_dir)
           end
         end

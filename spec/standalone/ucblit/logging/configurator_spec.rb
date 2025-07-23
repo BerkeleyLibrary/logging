@@ -29,7 +29,7 @@ module BerkeleyLibrary
           it 'enables Lograge' do
             Configurator.configure(config)
             lograge = config.lograge
-            expect(lograge.enabled).to eq(true)
+            expect(lograge.enabled).to be(true)
           end
 
           it 'extracts request info from log events' do
@@ -79,7 +79,7 @@ module BerkeleyLibrary
 
         describe 'Webpacker' do
           it 'works if Webpacker is not present' do
-            expect(Object.const_defined?(:Webpacker)).to eq(false) # just to be sure
+            expect(Object.const_defined?(:Webpacker)).to be(false) # just to be sure
             expect { Configurator.configure(config) }.not_to raise_error
           end
 

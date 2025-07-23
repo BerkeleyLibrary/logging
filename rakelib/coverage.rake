@@ -1,6 +1,7 @@
 require 'colorize'
 
 namespace :simplecov do
+  desc 'Run coverage analysis'
   task :check_coverage do
     ENV['COVERAGE'] ||= 'true'
     Rake::Task['spec'].invoke
@@ -9,6 +10,7 @@ namespace :simplecov do
     raise
   end
 
+  desc 'Create the structured coverage report'
   task :report do
     require 'simplecov'
     require 'simplecov-rcov'

@@ -1,6 +1,7 @@
 require 'rspec/core/rake_task'
 
 namespace :spec do
+  desc 'Prepare the specs for execution'
   task :prepare do
     if ENV['GENERATE_REPORTS']
       ENV['CI_REPORTS'] = 'artifacts/rspec'
@@ -26,6 +27,6 @@ desc 'Run all specs in spec directory'
 task spec: ['spec:prepare'] do
   Rake::Task['spec:all'].invoke
 ensure
-  reports_dir = ENV['CI_REPORTS']
+  reports_dir = ENV.fetch('CI_REPORTS', nil)
   puts "JUnit-format XML test report written to #{reports_dir}" if reports_dir
 end

@@ -18,7 +18,7 @@ module BerkeleyLibrary
         expect(defined?(Rails)).to be_truthy # just to be sure
         Logging.env = 'elvis'
         expect(Rails.env).to eq('elvis')
-        expect(Rails.env.elvis?).to eq(true)
+        expect(Rails.env.elvis?).to be(true)
       end
     end
   end

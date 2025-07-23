@@ -20,7 +20,6 @@ Gem::Specification.new do |spec|
   spec.homepage = BerkeleyLibrary::Logging::ModuleInfo::HOMEPAGE
 
   spec.files = `git ls-files -z`.split("\x0")
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features|artifacts)/})
   spec.require_paths = ['lib']
 
   spec.required_ruby_version = ruby_version
