@@ -11,8 +11,8 @@ require 'berkeley_library/logging/module_info'
 
 Gem::Specification.new do |spec|
   spec.name = BerkeleyLibrary::Logging::ModuleInfo::NAME
-  spec.author = BerkeleyLibrary::Logging::ModuleInfo::AUTHOR
-  spec.email = BerkeleyLibrary::Logging::ModuleInfo::AUTHOR_EMAIL
+  spec.author = BerkeleyLibrary::Logging::ModuleInfo::AUTHORS
+  spec.email = BerkeleyLibrary::Logging::ModuleInfo::AUTHOR_EMAILS
   spec.summary = BerkeleyLibrary::Logging::ModuleInfo::SUMMARY
   spec.description = BerkeleyLibrary::Logging::ModuleInfo::DESCRIPTION
   spec.license = BerkeleyLibrary::Logging::ModuleInfo::LICENSE
@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = ruby_version
 
-  rails_version = '>= 6'
+  rails_version = '>= 7'
 
   spec.add_dependency 'activesupport', rails_version
   spec.add_dependency 'amazing_print', '~> 1.1'
