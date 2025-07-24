@@ -11,8 +11,8 @@ require 'berkeley_library/logging/module_info'
 
 Gem::Specification.new do |spec|
   spec.name = BerkeleyLibrary::Logging::ModuleInfo::NAME
-  spec.author = BerkeleyLibrary::Logging::ModuleInfo::AUTHOR
-  spec.email = BerkeleyLibrary::Logging::ModuleInfo::AUTHOR_EMAIL
+  spec.author = BerkeleyLibrary::Logging::ModuleInfo::AUTHORS
+  spec.email = BerkeleyLibrary::Logging::ModuleInfo::AUTHOR_EMAILS
   spec.summary = BerkeleyLibrary::Logging::ModuleInfo::SUMMARY
   spec.description = BerkeleyLibrary::Logging::ModuleInfo::DESCRIPTION
   spec.license = BerkeleyLibrary::Logging::ModuleInfo::LICENSE
@@ -20,32 +20,31 @@ Gem::Specification.new do |spec|
   spec.homepage = BerkeleyLibrary::Logging::ModuleInfo::HOMEPAGE
 
   spec.files = `git ls-files -z`.split("\x0")
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features|artifacts)/})
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = ">= #{ruby_version}"
+  spec.required_ruby_version = ruby_version
 
-  rails_version = '>= 6'
+  rails_version = '>= 7'
 
   spec.add_dependency 'activesupport', rails_version
   spec.add_dependency 'amazing_print', '~> 1.1'
-  spec.add_dependency 'colorize', '~> 0.8.1'
+  spec.add_dependency 'colorize', '~> 1.0'
   spec.add_dependency 'lograge', '~> 0.11'
-  spec.add_dependency 'ougai', '~> 1.8'
+  spec.add_dependency 'ougai', '~> 2.0'
 
   spec.add_development_dependency 'brakeman', '~> 4.9'
   spec.add_development_dependency 'bundle-audit', '~> 0.1'
   spec.add_development_dependency 'ci_reporter_rspec', '~> 1.0'
   spec.add_development_dependency 'dotenv', '~> 2.7'
-  spec.add_development_dependency 'irb', '~> 1.2' # workaroundfor https://github.com/bundler/bundler/issues/6929
-  spec.add_development_dependency 'listen', '>= 3.0.5', '< 3.2'
+  spec.add_development_dependency 'listen', '~> 3.2'
   spec.add_development_dependency 'rails', rails_version
   spec.add_development_dependency 'rake', '~> 13.0'
-  spec.add_development_dependency 'rspec-support', '~> 3.9'
-  spec.add_development_dependency 'rubocop', '~> 1.26.0'
-  spec.add_development_dependency 'rubocop-rspec', '~> 2.4.0'
-  spec.add_development_dependency 'simplecov', '~> 0.21.1'
-  spec.add_development_dependency 'simplecov-console', '~> 0.9.1'
+  spec.add_development_dependency 'rspec', '~> 3.9'
+  spec.add_development_dependency 'rubocop', '~> 1.78.0'
+  spec.add_development_dependency 'rubocop-rake', '~> 0.7.1'
+  spec.add_development_dependency 'rubocop-rspec', '~> 3.6.0'
+  spec.add_development_dependency 'simplecov', '~> 0.21'
+  spec.add_development_dependency 'simplecov-console', '~> 0.9'
   spec.add_development_dependency 'simplecov-rcov', '~> 0.2'
 
   spec.metadata['rubygems_mfa_required'] = 'true'

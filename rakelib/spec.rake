@@ -1,6 +1,7 @@
 require 'rspec/core/rake_task'
 
 namespace :spec do
+  desc 'Prepare the specs for execution'
   task :prepare do
     if ENV['GENERATE_REPORTS']
       ENV['CI_REPORTS'] = 'artifacts/rspec'
@@ -14,7 +15,7 @@ namespace :spec do
     groups.each do |group|
       desc "Run specs in spec/#{group} directory"
       RSpec::Core::RakeTask.new(group) do |task|
-        task.rspec_opts = %w[--color --format documentation --order default]
+        task.rspec_opts = %w[--color --format documentation]
         task.pattern = "spec/#{group}/**/*_spec.rb"
       end
     end
@@ -26,6 +27,6 @@ desc 'Run all specs in spec directory'
 task spec: ['spec:prepare'] do
   Rake::Task['spec:all'].invoke
 ensure
-  reports_dir = ENV['CI_REPORTS']
+  reports_dir = ENV.fetch('CI_REPORTS', nil)
   puts "JUnit-format XML test report written to #{reports_dir}" if reports_dir
 end

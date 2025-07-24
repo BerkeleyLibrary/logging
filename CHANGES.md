@@ -1,6 +1,8 @@
-# 0.2.8 (next)
+# 0.3.0 (2025-07-23)
 
-- Log `HTTP_USER_AGENT`
+- Update to support Ruby 3.3+ and Rails 7+ exclusively.
+- Update Rubocop & Style changes.
+- Log `HTTP_USER_AGENT`.
 
 # 0.2.7 (2022-05-25)
 

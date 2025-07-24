@@ -38,7 +38,7 @@ module BerkeleyLibrary
           logging_initializer.run(app)
           bootstrap_logger_initializer.run(app)
 
-          expect(Rails.logger).to be_a(BerkeleyLibrary::Logging::Logger)
+          expect(Rails.logger.broadcasts).to include(a_kind_of(BerkeleyLibrary::Logging::Logger))
         end
       end
     end

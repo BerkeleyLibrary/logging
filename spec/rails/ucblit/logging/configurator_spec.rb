@@ -32,7 +32,7 @@ module BerkeleyLibrary
           it 'enables Lograge' do
             Configurator.configure(config)
             lograge = config.lograge
-            expect(lograge.enabled).to eq(true)
+            expect(lograge.enabled).to be(true)
           end
 
           context 'events' do
@@ -86,10 +86,8 @@ module BerkeleyLibrary
               allow(session).to receive(:to_hash).and_return(session_hash)
 
               @request = instance_double(ActionDispatch::Request)
-              allow(request).to receive(:origin).and_return('http://example.org:3000')
-              allow(request).to receive(:base_url).and_return('https://example.org:3443')
-              allow(request).to receive(:x_csrf_token).and_return('5551212')
-              allow(request).to receive(:session).and_return(session)
+              allow(request).to receive_messages(origin: 'http://example.org:3000', base_url: 'https://example.org:3443', x_csrf_token: '5551212',
+                                                 session: session)
 
               @payload = {
                 params: params,
@@ -152,7 +150,7 @@ module BerkeleyLibrary
 
         describe 'Webpacker' do
           it 'works if Webpacker is not present' do
-            expect(Object.const_defined?(:Webpacker)).to eq(false) # just to be sure
+            expect(Object.const_defined?(:Webpacker)).to be(false) # just to be sure
             expect { Configurator.configure(config) }.not_to raise_error
           end
 

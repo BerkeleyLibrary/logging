@@ -24,9 +24,9 @@ module BerkeleyLibrary
         @logger = (ensure_logger(v) unless v.nil?)
       end
 
-      private
-
       LOG_METHODS = %i[debug info warn error].freeze
+
+      private
 
       def ensure_logger(v)
         return v if (missing = LOG_METHODS.reject { |m| v.respond_to?(m) }).empty?

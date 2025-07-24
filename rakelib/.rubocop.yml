@@ -1,4 +1,7 @@
 inherit_from: ../.rubocop.yml
 
+plugins:
+  - rubocop-rake
+
 Metrics/BlockLength:
   Enabled: false
